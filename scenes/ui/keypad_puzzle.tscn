@@ -1,0 +1,309 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/keypad_puzzle.gd" id="1_keypad_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.09, 0.16, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.85, 1, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0.65, 1, 0.3)
+shadow_size = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_display"]
+bg_color = Color(0.02, 0.08, 0.12, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 0.65, 0.85)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 1, 0.6, 0.25)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_intel_card"]
+bg_color = Color(0.04, 0.12, 0.2, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.1, 0.6, 0.9, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_num"]
+bg_color = Color(0.1, 0.16, 0.28, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.65, 0.95, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.18, 0.35, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.95, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 0.8, 1, 0.45)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_enter"]
+bg_color = Color(0.06, 0.35, 0.25, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.9, 0.5, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="KeypadPuzzle" type="CanvasLayer"]
+process_mode = 3
+layer = 60
+script = ExtResource("1_keypad_script")
+
+[node name="RootControl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="RootControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.06, 0.12, 0.45)
+
+[node name="CenterContainer" type="CenterContainer" parent="RootControl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="KeypadPanel" type="PanelContainer" parent="RootControl/CenterContainer"]
+custom_minimum_size = Vector2(720, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="RootControl/CenterContainer/KeypadPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 22
+
+[node name="HBoxRoot" type="HBoxContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="KeypadVBox" type="VBoxContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot"]
+custom_minimum_size = Vector2(330, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderLabel" type="Label" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "AETHELGARD SECURITY OVERRIDE"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "ENTER 4-DIGIT SECURITY OVERRIDE"
+horizontal_alignment = 1
+
+[node name="DisplayPanel" type="PanelContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_display")
+
+[node name="DisplayLabel" type="Label" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/DisplayPanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 1, 0.65, 1)
+theme_override_font_sizes/font_size = 28
+text = "[ _  _  _  _ ]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="KeypadGrid" type="GridContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 3
+
+[node name="Btn1" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "1"
+
+[node name="Btn2" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "2"
+
+[node name="Btn3" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "3"
+
+[node name="Btn4" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "4"
+
+[node name="Btn5" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "5"
+
+[node name="Btn6" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "6"
+
+[node name="Btn7" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "7"
+
+[node name="Btn8" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "8"
+
+[node name="Btn9" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "9"
+
+[node name="BtnClr" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "CLEAR"
+
+[node name="Btn0" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "0"
+
+[node name="BtnEnter" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox/KeypadGrid"]
+custom_minimum_size = Vector2(80, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.6, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_enter")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "ENTER"
+
+[node name="CloseButton" type="Button" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/KeypadVBox"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_num")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "CANCEL / EXIT [ESC]"
+
+[node name="VSeparator" type="VSeparator" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot"]
+layout_mode = 2
+
+[node name="IntelVBox" type="VBoxContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="IntelTitle" type="Label" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/IntelVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "FIELD INTEL MEMORY BANK"
+
+[node name="IntelSub" type="Label" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/IntelVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.9, 1)
+theme_override_font_sizes/font_size = 12
+text = "Clues gathered in Sector A:"
+
+[node name="IntelCard" type="PanelContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/IntelVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_intel_card")
+
+[node name="IntelCardMargin" type="MarginContainer" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/IntelVBox/IntelCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 14
+
+[node name="IntelReadout" type="RichTextLabel" parent="RootControl/CenterContainer/KeypadPanel/MarginContainer/HBoxRoot/IntelVBox/IntelCard/IntelCardMargin"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "Clues list..."

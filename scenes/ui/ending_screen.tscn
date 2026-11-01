@@ -1,0 +1,149 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/ending_screen.gd" id="1_ending_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.09, 0.16, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.95, 0.65, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.1, 0.9, 0.5, 0.3)
+shadow_size = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
+bg_color = Color(0.06, 0.35, 0.25, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.95, 0.6, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.12, 0.45, 0.35, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 1, 0.8, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0.2, 1, 0.6, 0.4)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_secondary"]
+bg_color = Color(0.1, 0.16, 0.28, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.65, 0.95, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="EndingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ending_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.07, 0.12, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EndingPanel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(680, 480)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/EndingPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/EndingPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="StatusHeader" type="Label" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 1, 0.65, 1)
+theme_override_font_sizes/font_size = 38
+text = "SECTOR A CLEARED"
+horizontal_alignment = 1
+
+[node name="SubHeader" type="Label" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "SECURITY PROTOCOL OVERRIDDEN // DESCENT TO SUB-LEVEL 4"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="NarrativeText" type="RichTextLabel" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "The heavy hydraulic blast doors groan open, revealing the dark descent into the abandoned research subterranean core.
+
+Your handheld radio crackles through the static with Dr. Aris Vance's voice:
+[color=#00e5ff]\"Ellis... if you're hearing this, you bypassed the quarantine barrier. But be warned: the acoustic dampeners failed hours ago. The thing in Sub-Level 4... it reacts to sound.\"[/color]
+
+[color=#50fa7b][b]MILESTONE 1 COMPLETE![/b][/color] You successfully explored the room, solved the environmental clues, and bypassed the security door."
+
+[node name="HSeparator2" type="HSeparator" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ReplayButton" type="Button" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "PLAY PROTOTYPE AGAIN"
+
+[node name="MainMenuButton" type="Button" parent="CenterContainer/EndingPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.98, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_secondary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "RETURN TO MAIN MENU"

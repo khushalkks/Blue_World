@@ -1,0 +1,236 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_normal"]
+bg_color = Color(0.08, 0.14, 0.24, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.65, 0.95, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_hover"]
+bg_color = Color(0.15, 0.32, 0.52, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.95, 1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 0.85, 1, 0.4)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_primary"]
+bg_color = Color(0.06, 0.3, 0.42, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.9, 1, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.06, 0.09, 0.16, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.85, 1, 0.9)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0.65, 1, 0.3)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_close"]
+bg_color = Color(0.1, 0.22, 0.35, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.8, 1, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.08, 0.14, 1)
+
+[node name="TitleContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -380.0
+offset_top = -230.0
+offset_right = 380.0
+offset_bottom = -90.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.3, 0.7, 0.9)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_font_sizes/font_size = 56
+text = "THE LAST SIGNAL"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.82, 0.95, 1)
+theme_override_font_sizes/font_size = 17
+text = "SUB-LEVEL 3 // ACOUSTIC RESEARCH FACILITY"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -15.0
+offset_right = 170.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="NewGameButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "NEW INVESTIGATION"
+
+[node name="HowToPlayButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "HOW TO PLAY & CONTROLS"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 0.98, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = "QUIT TO DESKTOP"
+
+[node name="FooterLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.0
+offset_top = -45.0
+offset_right = 260.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.5, 0.6, 0.75, 1)
+theme_override_font_sizes/font_size = 13
+text = "Milestone 1 Playable Prototype // Godot Engine 4.x"
+horizontal_alignment = 1
+
+[node name="HowToPlayPanel" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(560, 360)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -180.0
+offset_right = 280.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="HowToPlayPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 22
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 22
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HowToPlayPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HelpTitle" type="Label" parent="HowToPlayPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.1, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "INVESTIGATOR FIELD MANUAL"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="HowToPlayPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HelpBody" type="RichTextLabel" parent="HowToPlayPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+text = "[color=#00e5ff][b]MOVEMENT:[/b][/color] Use [b]W, A, S, D[/b] or [b]Arrow Keys[/b] to move Ellis Parker.
+[color=#00e5ff][b]FLASHLIGHT:[/b][/color] Automatically aims toward your current walking direction.
+[color=#00e5ff][b]INTERACT:[/b][/color] Walk up to lab fixtures (Terminal, Whiteboard, Oscilloscope) and press [b]E[/b] to inspect.
+[color=#00e5ff][b]SECURITY OVERRIDE PUZZLE:[/b][/color]
+Each clue gives parts of the 4-digit code.
+Inspect all 3 fixtures, then use the Keypad beside the blast door to enter the code and unlock Sector A!"
+
+[node name="CloseHelpButton" type="Button" parent="HowToPlayPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(130, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_close")
+theme_override_styles/hover = SubResource("StyleBoxFlat_btn_hover")
+text = " UNDERSTOOD "
