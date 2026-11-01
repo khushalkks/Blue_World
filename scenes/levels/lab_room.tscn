@@ -1,0 +1,201 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/lab_room.gd" id="1_room_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/floor_tile.png" id="2_floor_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/wall.png" id="3_wall_tex"]
+[ext_resource type="PackedScene" path="res://scenes/player/player.tscn" id="4_player_scene"]
+[ext_resource type="PackedScene" path="res://scenes/environment/blast_door.tscn" id="5_door_scene"]
+[ext_resource type="PackedScene" path="res://scenes/environment/clue_object.tscn" id="6_clue_scene"]
+[ext_resource type="Texture2D" path="res://assets/textures/whiteboard.png" id="7_whiteboard_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/bio_shelf.png" id="8_bio_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/light_round.png" id="9_light_tex"]
+[ext_resource type="PackedScene" path="res://scenes/ui/clue_dialog.tscn" id="10_dialog_scene"]
+[ext_resource type="PackedScene" path="res://scenes/ui/keypad_puzzle.tscn" id="11_keypad_scene"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(960, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(48, 640)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door_gap"]
+size = Vector2(440, 48)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.06, 0.1, 0.18, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0.85, 1, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(0, 0.5, 0.8, 0.25)
+shadow_size = 6
+
+[node name="LabRoom" type="Node2D"]
+script = ExtResource("1_room_script")
+
+[node name="Floor" type="Sprite2D" parent="."]
+z_index = -10
+texture_repeat = 2
+texture = ExtResource("2_floor_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 640)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0.55, 0.6, 0.72, 1)
+
+[node name="RoomWalls" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="WallSouth" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(0, 320)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="WallEast" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(480, 0)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="WallWest" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(-480, 0)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="WallNorthLeft" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(-260, -320)
+shape = SubResource("RectangleShape2D_door_gap")
+
+[node name="WallNorthRight" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(260, -320)
+shape = SubResource("RectangleShape2D_door_gap")
+
+[node name="WallVisuals" type="Node2D" parent="."]
+z_index = -5
+
+[node name="NorthWallSprite" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(0, -320)
+texture_repeat = 2
+texture = ExtResource("3_wall_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 48)
+
+[node name="SouthWallSprite" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(0, 320)
+texture_repeat = 2
+texture = ExtResource("3_wall_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 48)
+
+[node name="WestWallSprite" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(-480, 0)
+texture_repeat = 2
+texture = ExtResource("3_wall_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 640)
+
+[node name="EastWallSprite" type="Sprite2D" parent="WallVisuals"]
+position = Vector2(480, 0)
+texture_repeat = 2
+texture = ExtResource("3_wall_tex")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 640)
+
+[node name="BlastDoor" parent="." instance=ExtResource("5_door_scene")]
+position = Vector2(0, -320)
+
+[node name="Clue1_Terminal" parent="." instance=ExtResource("6_clue_scene")]
+position = Vector2(-320, -180)
+clue_id = "terminal"
+clue_title = "VANCE'S AUDIO LOG // LOG #084"
+clue_content = "[color=#00e5ff][b]DR. ARIS VANCE (AUDIO RECORDING):[/b][/color]\n\n\"Ellis! If you made it inside Sector A, listen carefully: I scrambled the emergency blast door override code so the facility security drones couldn't track me down.\n\nThe 4-digit code starts with our location:\n• [color=#ffdd44][b]DIGIT 1:[/b][/color] Look at the room identification plaque on the north bulkhead. This entire lab wing is [b]SECTOR 7[/b].\n\n[color=#e0e8ff]Vance's voice strains:[/color] \"Find my cryo report and the oscilloscope to get the remaining digits!\""
+prompt_text = "[E] Inspect Vance's Terminal"
+custom_glow_color = Color(0, 0.9, 1, 1)
+
+[node name="Clue2_Whiteboard" parent="." instance=ExtResource("6_clue_scene")]
+position = Vector2(320, -180)
+clue_id = "whiteboard"
+clue_title = "CRYO-RESONANCE WHITEBOARD"
+clue_content = "[color=#00e5ff][b]SPECIMEN OMEGA CRYOGENIC ANALYSIS:[/b][/color]\n\nAnomalous bio-acoustic organism isolated at -180°C.\n\n• [color=#ffdd44][b]DIGIT 2 (Cryo-Stabilizer Frequency):[/b][/color] Calibrated at index [b]3[/b].\n• [color=#ffdd44][b]DIGIT 3 (Harmonic Resonance Peak):[/b][/color] Spikes at channel [b]9[/b].\n\n[color=#ff79c6]Vance's handwritten red ink note:[/color]\n\"The door lock's middle digits are always the Stabilizer ([b]3[/b]) followed immediately by the Peak ([b]9[/b]).\""
+prompt_text = "[E] Inspect Specimen Board"
+custom_texture = ExtResource("7_whiteboard_tex")
+custom_glow_color = Color(0.95, 0.35, 1, 1)
+
+[node name="Clue3_AudioConsole" parent="." instance=ExtResource("6_clue_scene")]
+position = Vector2(-320, 160)
+clue_id = "bio_shelf"
+clue_title = "TELEMETRY OSCILLOSCOPE CONSOLE"
+clue_content = "[color=#00e5ff][b]SUB-LEVEL 4 FREQUENCY SWEEP READOUT:[/b][/color]\n\nAutomated scanner cycling through subterranean emergency channels:\n• Channel 1: Overloaded static (Offline)\n• Channel 2: Carrier wave severed\n• Channel 3: Atmospheric interference\n• [color=#50fa7b][b]Channel 4: TRANSMISSION ACTIVE (Dr. Vance's Sub-Level 4 Transceiver)[/b][/color]\n\n[color=#ffb86c]Facility Safety Standard Protocol:[/color]\n\"The final digit of all security doors is keyed to the active telemetry receiver channel ([b]4[/b]).\""
+prompt_text = "[E] Inspect Audio Console"
+custom_texture = ExtResource("8_bio_tex")
+custom_glow_color = Color(0.1, 1, 0.5, 1)
+
+[node name="AmbientRoomLight" type="PointLight2D" parent="."]
+position = Vector2(0, 0)
+color = Color(0.4, 0.6, 0.9, 1)
+energy = 0.85
+texture = ExtResource("9_light_tex")
+texture_scale = 4.2
+
+[node name="Player" parent="." instance=ExtResource("4_player_scene")]
+position = Vector2(0, 140)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="ClueTrackerPanel" type="PanelContainer" parent="HUD"]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 380.0
+offset_bottom = 64.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="Margin" type="MarginContainer" parent="HUD/ClueTrackerPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 8
+
+[node name="ClueTrackerLabel" type="Label" parent="HUD"]
+offset_left = 40.0
+offset_top = 28.0
+offset_right = 368.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(0.1, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "RESEARCH INTEL: 0 / 3 CLUES ANALYZED"
+
+[node name="StatusBannerLabel" type="Label" parent="HUD"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 24.0
+offset_right = 320.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 16
+text = "MISSION: INVESTIGATE SIGNAL IN SECTOR A"
+horizontal_alignment = 1
+
+[node name="EscHintLabel" type="Label" parent="HUD"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 28.0
+offset_right = -24.0
+offset_bottom = 56.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.7, 0.8, 0.95, 1)
+theme_override_font_sizes/font_size = 14
+text = "[ESC] Menu / Cancel"
+horizontal_alignment = 2
+
+[node name="ClueDialog" parent="." instance=ExtResource("10_dialog_scene")]
+
+[node name="KeypadPuzzle" parent="." instance=ExtResource("11_keypad_scene")]

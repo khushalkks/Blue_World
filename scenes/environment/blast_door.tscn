@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/blast_door.gd" id="1_door_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/blast_door_closed.png" id="2_door_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/keypad.png" id="3_keypad_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/light_round.png" id="4_light_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_keypad"]
+radius = 32.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(40, 24)
+
+[node name="BlastDoor" type="Node2D"]
+script = ExtResource("1_door_script")
+
+[node name="DoorSprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_door_tex")
+
+[node name="DoorStaticBody" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorStaticBody"]
+shape = SubResource("RectangleShape2D_door")
+
+[node name="KeypadSprite" type="Sprite2D" parent="."]
+position = Vector2(48, 12)
+texture = ExtResource("3_keypad_tex")
+
+[node name="KeypadArea" type="Area2D" parent="."]
+position = Vector2(48, 12)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KeypadArea"]
+shape = SubResource("CircleShape2D_keypad")
+
+[node name="ExitArea" type="Area2D" parent="."]
+position = Vector2(0, -20)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitArea"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="StatusLight" type="PointLight2D" parent="."]
+position = Vector2(0, 0)
+color = Color(1, 0.15, 0.2, 1)
+energy = 1.0
+texture = ExtResource("4_light_tex")
+texture_scale = 0.5

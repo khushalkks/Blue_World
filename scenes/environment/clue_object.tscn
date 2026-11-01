@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/environment/clue_object.gd" id="1_clue_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/terminal.png" id="2_clue_tex"]
+[ext_resource type="Texture2D" path="res://assets/textures/light_round.png" id="3_glow_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trigger"]
+radius = 36.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_solid"]
+size = Vector2(38, 38)
+
+[node name="ClueObject" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("1_clue_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_clue_tex")
+
+[node name="TriggerCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_trigger")
+
+[node name="ObstacleBody" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="SolidCollision" type="CollisionShape2D" parent="ObstacleBody"]
+shape = SubResource("RectangleShape2D_solid")
+
+[node name="GlowLight" type="PointLight2D" parent="."]
+color = Color(0.2, 0.85, 1, 1)
+energy = 0.6
+texture = ExtResource("3_glow_tex")
+texture_scale = 0.45
