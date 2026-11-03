@@ -109,26 +109,26 @@ position = Vector2(0, -320)
 [node name="Clue1_Terminal" parent="." instance=ExtResource("6_clue_scene")]
 position = Vector2(-320, -180)
 clue_id = "terminal"
-clue_title = "VANCE'S AUDIO LOG // LOG #084"
-clue_content = "[color=#00e5ff][b]DR. ARIS VANCE (AUDIO RECORDING):[/b][/color]\n\n\"Ellis! If you made it inside Sector A, listen carefully: I scrambled the emergency blast door override code so the facility security drones couldn't track me down.\n\nThe 4-digit code starts with our location:\n• [color=#ffdd44][b]DIGIT 1:[/b][/color] Look at the room identification plaque on the north bulkhead. This entire lab wing is [b]SECTOR 7[/b].\n\n[color=#e0e8ff]Vance's voice strains:[/color] \"Find my cryo report and the oscilloscope to get the remaining digits!\""
-prompt_text = "[E] Inspect Vance's Terminal"
+clue_title = "SECURITY TERMINAL // INCIDENT LOG #07"
+clue_content = "[color=#00e5ff][b]CRYO-CONTAINMENT SECURITY LOG // STATION 1[/b][/color]\n[color=#3d5a80]═════════════════════════════════════════════════[/color]\n[color=#ff5555][b]ALERT: SPECIMEN OUTBREAK IN SUB-LEVEL SECTOR[/b][/color]\n\n[color=#e0e8ff]At 02:40 AM, an unknown bio-electric entity ruptured its stasis chamber. Dr. Vance sealed the north blast door with a 4-digit code across the room's 3 stations.[/color]\n\n[color=#00e5ff][b]DIAGNOSTIC STATUS OF CRYO-PODS (1 TO 10):[/b][/color]\n  • Pods 1 through 6: [color=#50fa7b][ INTACT - PODS SEALED ][/color]\n  • [color=#ff4444][b]Pod 7: [!! BREACHED - SPECIMEN ESCAPED !!][/b][/color]\n  • Pods 8 through 10: [color=#708090][ EMPTY / STANDBY ][/color]\n\n[color=#ffdd44][b]◆ CLUE FOR DIGIT 1 (The Breached Pod):[/b][/color]\n[color=#e0e8ff]Security Protocol locks the first digit to the ruptured pod number.[/color]\n[color=#50fa7b][b]>>> FIRST CODE DIGIT IS: 7 <<<[/b][/color]"
+prompt_text = "[E] Inspect Security Terminal (Clue 1)"
 custom_glow_color = Color(0, 0.9, 1, 1)
 
 [node name="Clue2_Whiteboard" parent="." instance=ExtResource("6_clue_scene")]
 position = Vector2(320, -180)
 clue_id = "whiteboard"
-clue_title = "CRYO-RESONANCE WHITEBOARD"
-clue_content = "[color=#00e5ff][b]SPECIMEN OMEGA CRYOGENIC ANALYSIS:[/b][/color]\n\nAnomalous bio-acoustic organism isolated at -180°C.\n\n• [color=#ffdd44][b]DIGIT 2 (Cryo-Stabilizer Frequency):[/b][/color] Calibrated at index [b]3[/b].\n• [color=#ffdd44][b]DIGIT 3 (Harmonic Resonance Peak):[/b][/color] Spikes at channel [b]9[/b].\n\n[color=#ff79c6]Vance's handwritten red ink note:[/color]\n\"The door lock's middle digits are always the Stabilizer ([b]3[/b]) followed immediately by the Peak ([b]9[/b]).\""
-prompt_text = "[E] Inspect Specimen Board"
+clue_title = "RESEARCH BOARD // TRANQUILIZER RECIPE"
+clue_content = "[color=#ff79c6][b]SPECIMEN SUBJUGATION FORMULA // STATION 2[/b][/color]\n[color=#3d5a80]═════════════════════════════════════════════════[/color]\n[color=#e0e8ff]A research chalkboard pinned with schematics, chemical diagrams, and urgent yellow sticky notes left by Dr. Vance:[/color]\n\n[color=#ffdd44]\"If Specimen 7 attacks, mix the neuro-sedative compound immediately to pacify it! DO NOT mess up the ratio:\"[/color]\n\n[color=#00e5ff][b]SEDATIVE CHEMICAL RATIO (MIDDLE DIGITS):[/b][/color]\n  • [color=#50fa7b][b]Step 1 (Digit 2):[/b][/color] Exactly [color=#ffdd44][b]3[/b][/color] vials of Blue Stabilizer.\n  • [color=#50fa7b][b]Step 2 (Digit 3):[/b][/color] Exactly [color=#ffdd44][b]9[/b][/color] grams of Golden Catalyst.\n\n[color=#ffb86c][b]◆ CLUE FOR DIGITS 2 & 3 (The Chemical Ratio):[/b][/color]\n[color=#e0e8ff]The blast door override requires the sedative formula in sequence.[/color]\n[color=#50fa7b][b]>>> MIDDLE CODE DIGITS ARE: 3 then 9 <<<[/b][/color]"
+prompt_text = "[E] Inspect Research Board (Clue 2)"
 custom_texture = ExtResource("7_whiteboard_tex")
 custom_glow_color = Color(0.95, 0.35, 1, 1)
 
 [node name="Clue3_AudioConsole" parent="." instance=ExtResource("6_clue_scene")]
 position = Vector2(-320, 160)
 clue_id = "bio_shelf"
-clue_title = "TELEMETRY OSCILLOSCOPE CONSOLE"
-clue_content = "[color=#00e5ff][b]SUB-LEVEL 4 FREQUENCY SWEEP READOUT:[/b][/color]\n\nAutomated scanner cycling through subterranean emergency channels:\n• Channel 1: Overloaded static (Offline)\n• Channel 2: Carrier wave severed\n• Channel 3: Atmospheric interference\n• [color=#50fa7b][b]Channel 4: TRANSMISSION ACTIVE (Dr. Vance's Sub-Level 4 Transceiver)[/b][/color]\n\n[color=#ffb86c]Facility Safety Standard Protocol:[/color]\n\"The final digit of all security doors is keyed to the active telemetry receiver channel ([b]4[/b]).\""
-prompt_text = "[E] Inspect Audio Console"
+clue_title = "RADIO OSCILLOSCOPE // RESCUE SCANNER"
+clue_content = "[color=#50fa7b][b]EMERGENCY FREQUENCY MONITOR // STATION 3[/b][/color]\n[color=#3d5a80]═════════════════════════════════════════════════[/color]\n[color=#e0e8ff]A glowing phosphor oscilloscope receiver actively scanning shortwave radio channels from the underground abyss:[/color]\n\n  • Channel 1: [color=#708090][ DEAD CARRIER - NO SIGNAL ][/color]\n  • Channel 2: [color=#708090][ DRONE JAMMING STATIC ][/color]\n  • Channel 3: [color=#708090][ REACTOR HUM INTERFERENCE ][/color]\n  • [color=#50fa7b][b]Channel 4: [◄ LIVE DISTRESS TRANSMISSION DETECTED! ►][/b][/color]\n\n[color=#00e5ff]Dr. Vance's voice crackles over the radio speaker:[/color]\n\"Ellis! The blast door final digit is synced to my broadcast channel! Tune to channel 4 to escape!\"\n\n[color=#ffdd44][b]◆ CLUE FOR DIGIT 4 (The Active Frequency):[/b][/color]\n[color=#e0e8ff]The only transmitting rescue beacon is broadcasting on channel 4.[/color]\n[color=#50fa7b][b]>>> FINAL CODE DIGIT IS: 4 <<<[/b][/color]"
+prompt_text = "[E] Inspect Radio Console (Clue 3)"
 custom_texture = ExtResource("8_bio_tex")
 custom_glow_color = Color(0.1, 1, 0.5, 1)
 
@@ -179,7 +179,7 @@ offset_bottom = 56.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
 theme_override_font_sizes/font_size = 16
-text = "MISSION: INVESTIGATE SIGNAL IN SECTOR A"
+text = "MISSION: INSPECT 3 LAB STATIONS TO DECODE BLAST DOOR PASSCODE"
 horizontal_alignment = 1
 
 [node name="EscHintLabel" type="Label" parent="HUD"]

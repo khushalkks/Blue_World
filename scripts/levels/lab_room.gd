@@ -7,14 +7,15 @@ extends Node2D
 @onready var hud_status_banner: Label = $HUD/StatusBannerLabel
 
 func _ready() -> void:
+	GameState.play_bgm("ambient", -6.0)
 	GameState.clue_inspected.connect(_on_clue_inspected)
 	GameState.puzzle_solved.connect(_on_puzzle_solved)
 	_update_hud()
 	
 	if hud_status_banner:
 		hud_status_banner.visible = true
-		hud_status_banner.text = "MISSION: INVESTIGATE SIGNAL IN SECTOR A"
-		await get_tree().create_timer(4.0).timeout
+		hud_status_banner.text = "MISSION: INSPECT 3 LAB STATIONS TO DECODE BLAST DOOR PASSCODE"
+		await get_tree().create_timer(5.0).timeout
 		if is_instance_valid(hud_status_banner) and not GameState.is_puzzle_solved:
 			hud_status_banner.visible = false
 
