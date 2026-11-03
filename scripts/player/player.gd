@@ -13,6 +13,8 @@ extends CharacterBody2D
 @onready var prompt_label: Label = $PromptLabel
 
 var facing_direction: Vector2 = Vector2.DOWN
+var step_timer: float = 0.0
+var step_toggle: bool = false
 
 func _ready() -> void:
 	add_to_group("player")
@@ -33,8 +35,16 @@ func _physics_process(delta: float) -> void:
 		velocity = velocity.move_toward(input_vec * move_speed, acceleration * delta)
 		facing_direction = input_vec.normalized()
 		_update_facing(facing_direction)
+		
+		# Play soft footsteps while moving
+		step_timer += delta
+		if step_timer >= 0.35:
+			step_timer = 0.0
+			step_toggle = not step_toggle
+			GameState.play_sfx("footstep1" if step_toggle else "footstep2", -12.0, randf_range(0.92, 1.08))
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, friction * delta)
+		step_timer = 0.28 # Ready for immediate first step when resuming
 	
 	move_and_slide()
 	_handle_interaction()

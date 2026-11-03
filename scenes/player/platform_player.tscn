@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/platform_player.gd" id="1_player_script"]
+[ext_resource type="Texture2D" path="res://assets/platformer/player.png" id="2_player_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(26, 42)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stomp"]
+size = Vector2(24, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hurt"]
+size = Vector2(24, 36)
+
+[node name="PlatformPlayer" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_player_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_player_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_body")
+
+[node name="StompArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompArea"]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_stomp")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_hurt")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, -60)
+limit_top = -300
+limit_bottom = 650
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+
