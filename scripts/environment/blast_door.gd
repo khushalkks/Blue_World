@@ -60,6 +60,7 @@ func interact() -> void:
 		GameState.keypad_opened.emit()
 
 func _on_puzzle_solved() -> void:
+	GameState.play_sfx("door_slide", 1.0)
 	_update_door_visuals()
 	if GameState.nearby_interactive == self:
 		GameState.nearby_interactive = null

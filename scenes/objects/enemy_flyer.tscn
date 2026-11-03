@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/enemy_flyer.gd" id="1_flyer_script"]
+[ext_resource type="Texture2D" path="res://assets/platformer/enemy_flyer.png" id="2_flyer_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_stomp"]
+size = Vector2(28, 10)
+
+[node name="EnemyFlyer" type="Area2D"]
+collision_layer = 32
+collision_mask = 17
+script = ExtResource("1_flyer_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_flyer_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="StompZone" type="Area2D" parent="." groups=["stompable"]]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StompZone"]
+position = Vector2(0, -14)
+shape = SubResource("RectangleShape2D_stomp")
+
