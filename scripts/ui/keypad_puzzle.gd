@@ -58,37 +58,44 @@ func _on_keypad_opened() -> void:
 	status_label.text = "ENTER 4-DIGIT SECURITY OVERRIDE"
 	status_label.modulate = Color(0.8, 0.9, 1.0)
 	display_label.modulate = Color(0.1, 1.0, 0.65)
+	GameState.play_sfx("ui_hover")
 	_update_display()
 	_update_intel_bank()
 	visible = true
 
 func _update_intel_bank() -> void:
-	var text := "[b]DECRYPTED FIELD INTEL:[/b]\n\n"
-	
 	var has_t: bool = bool(GameState.clues_discovered.get("terminal", false))
 	var has_w: bool = bool(GameState.clues_discovered.get("whiteboard", false))
 	var has_b: bool = bool(GameState.clues_discovered.get("bio_shelf", false))
 	
+	var d1: String = "[color=#00ff88][b]7[/b][/color]" if has_t else "[color=#667799]?[/color]"
+	var d2: String = "[color=#00ff88][b]3[/b][/color]" if has_w else "[color=#667799]?[/color]"
+	var d3: String = "[color=#00ff88][b]9[/b][/color]" if has_w else "[color=#667799]?[/color]"
+	var d4: String = "[color=#00ff88][b]4[/b][/color]" if has_b else "[color=#667799]?[/color]"
+	
+	var text := "[center][b][color=#00e5ff]DETECTIVE CODE SLOTS[/color][/b][/center]\n"
+	text += "[center]Slot:  1     2     3     4\n[b][ [color=#ffdd44]" + d1 + "[/color] ]  [ [color=#ffdd44]" + d2 + "[/color] ]  [ [color=#ffdd44]" + d3 + "[/color] ]  [ [color=#ffdd44]" + d4 + "[/color] ][/b][/center]\n\n"
+	
 	if has_t:
-		text += "[color=#50fa7b][b]• CLUE 1 (Vance Terminal):[/b][/color]\n  Sector Number is [color=#ffdd44][b]7[/b][/color] (Digit 1 = [b]7[/b])\n\n"
+		text += "[color=#50fa7b][b]✔ SLOT 1 (Cyber Terminal):[/b][/color]\n  Specimen broke from Pod [color=#ffdd44][b]7[/b][/color] (Digit 1 = [b]7[/b])\n\n"
 	else:
-		text += "[color=#667799]• CLUE 1: Unanalyzed (Check terminal)[/color]\n\n"
+		text += "[color=#8899aa]✖ SLOT 1: Missing[/color]\n  [color=#667799]Inspect Terminal on West wall.[/color]\n\n"
 		
 	if has_w:
-		text += "[color=#50fa7b][b]• CLUE 2 (Cryo Whiteboard):[/b][/color]\n  Stabilizer [color=#ffdd44][b]3[/b][/color] & Peak [color=#ffdd44][b]9[/b][/color] (Digits 2, 3 = [b]3[/b], [b]9[/b])\n\n"
+		text += "[color=#50fa7b][b]✔ SLOTS 2 & 3 (Research Board):[/b][/color]\n  Sedative Ratio: [color=#ffdd44][b]3[/b][/color] Vials & [color=#ffdd44][b]9[/b][/color] Gold Dust (Digits 2, 3 = [b]3, 9[/b])\n\n"
 	else:
-		text += "[color=#667799]• CLUE 2: Unanalyzed (Check whiteboard)[/color]\n\n"
+		text += "[color=#8899aa]✖ SLOTS 2 & 3: Missing[/color]\n  [color=#667799]Inspect Board on East wall.[/color]\n\n"
 		
 	if has_b:
-		text += "[color=#50fa7b][b]• CLUE 3 (Audio Console):[/b][/color]\n  Active Telemetry Channel [color=#ffdd44][b]4[/b][/color] (Digit 4 = [b]4[/b])\n\n"
+		text += "[color=#50fa7b][b]✔ SLOT 4 (Radio Console):[/b][/color]\n  SOS broadcast is on Channel [color=#ffdd44][b]4[/b][/color] (Digit 4 = [b]4[/b])\n\n"
 	else:
-		text += "[color=#667799]• CLUE 3: Unanalyzed (Check console)[/color]\n\n"
+		text += "[color=#8899aa]✖ SLOT 4: Missing[/color]\n  [color=#667799]Inspect Radio on SW wall.[/color]\n\n"
 	
 	var all_found: bool = has_t and has_w and has_b
 	if all_found:
-		text += "[color=#00e5ff][b]>>> OVERRIDE SEQUENCE DEDUCED <<<[/b][/color]\n[color=#50fa7b][b]CODE: 7  3  9  4[/b][/color]"
+		text += "[center][color=#00e5ff][b]>>> OVERRIDE READY:  7  3  9  4 <<<[/b][/color][/center]"
 	else:
-		text += "[color=#ffb86c][i]Tip: Inspect all 3 lab fixtures to confirm the full code.[/i][/color]"
+		text += "[color=#ffb86c][i]Explore the lab room to inspect all fixtures.[/i][/color]"
 		
 	intel_readout.text = text
 
@@ -96,18 +103,21 @@ func _press_digit(d: String) -> void:
 	if is_submitting or current_input.length() >= max_digits:
 		return
 	current_input += d
+	GameState.play_sfx("key_beep", -3.0)
 	_update_display()
 
 func _backspace() -> void:
 	if is_submitting or current_input.is_empty():
 		return
 	current_input = current_input.substr(0, current_input.length() - 1)
+	GameState.play_sfx("switch_flip", -4.0)
 	_update_display()
 
 func _clear_input() -> void:
 	if is_submitting:
 		return
 	current_input = ""
+	GameState.play_sfx("switch_flip", -4.0)
 	_update_display()
 
 func _update_display() -> void:
@@ -147,5 +157,6 @@ func _submit_code() -> void:
 		is_submitting = false
 
 func close_keypad() -> void:
+	GameState.play_sfx("ui_click", -2.0)
 	visible = false
 	GameState.set_ui_blocking(false)

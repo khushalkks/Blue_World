@@ -1,0 +1,105 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/platform_hud.gd" id="1_hud_script"]
+[ext_resource type="Texture2D" path="res://assets/platformer/coin.png" id="2_coin_tex"]
+[ext_resource type="Texture2D" path="res://assets/platformer/heart.png" id="3_heart_tex"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud_bar"]
+bg_color = Color(0.08, 0.1, 0.18, 0.85)
+border_width_bottom = 2
+border_color = Color(0.2, 0.6, 1, 0.8)
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="PlatformHUD" type="CanvasLayer"]
+layer = 50
+script = ExtResource("1_hud_script")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 56)
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud_bar")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 48
+
+[node name="WorldVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="WorldTitle" type="Label" parent="MarginContainer/HBoxContainer/WorldVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "LEVEL"
+
+[node name="WorldLabel" type="Label" parent="MarginContainer/HBoxContainer/WorldVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "WORLD 1-1"
+
+[node name="ScoreVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ScoreTitle" type="Label" parent="MarginContainer/HBoxContainer/ScoreVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 11
+text = "SCORE"
+
+[node name="ScoreLabel" type="Label" parent="MarginContainer/HBoxContainer/ScoreVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "000000"
+
+[node name="CoinHBox" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CoinTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/CoinHBox"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("2_coin_tex")
+expand_mode = 1
+
+[node name="CoinLabel" type="Label" parent="MarginContainer/HBoxContainer/CoinHBox"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.85, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "x 00"
+
+[node name="LivesHBox" type="HBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HeartTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/LivesHBox"]
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("3_heart_tex")
+expand_mode = 1
+
+[node name="LivesLabel" type="Label" parent="MarginContainer/HBoxContainer/LivesHBox"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.25, 0.35, 1)
+theme_override_font_sizes/font_size = 18
+text = "❤ ❤ ❤"
+

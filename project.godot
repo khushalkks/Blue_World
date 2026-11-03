@@ -6,11 +6,11 @@ config_version=5
 
 [application]
 
-config/name="The Last Signal"
-config/description="An atmospheric mystery-adventure game set in an abandoned underground research facility."
-run/main_scene="res://scenes/ui/main_menu.tscn"
+config/name="Super Blue Runner"
+config/description="An exciting Mario-style 2D platformer with 3 action-packed levels, coin blocks, stomping enemies, springs, and a Boss Battle!"
+run/main_scene="res://scenes/ui/platform_main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-config/icon="res://assets/textures/player.png"
+config/icon="res://assets/platformer/player.png"
 
 [autoload]
 

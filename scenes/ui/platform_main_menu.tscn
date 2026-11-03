@@ -1,0 +1,250 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/platform_main_menu.gd" id="1_menu_script"]
+[ext_resource type="Texture2D" path="res://assets/platformer/player.png" id="2_player_tex"]
+[ext_resource type="Texture2D" path="res://assets/platformer/coin.png" id="3_coin_tex"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_start"]
+bg_color = Color(0.12, 0.45, 0.22, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 1, 0.5, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.2, 0.9, 0.4, 0.3)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_lvl"]
+bg_color = Color(0.1, 0.25, 0.45, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.7, 1, 0.8)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn_sub"]
+bg_color = Color(0.12, 0.16, 0.24, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.4, 0.6, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_help_box"]
+bg_color = Color(0.06, 0.09, 0.16, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.7, 1, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0.5, 1, 0.35)
+shadow_size = 16
+
+[node name="PlatformMainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.18, 1)
+
+[node name="HeroSprite" type="Sprite2D" parent="."]
+position = Vector2(240, 360)
+scale = Vector2(3.5, 3.5)
+texture = ExtResource("2_player_tex")
+
+[node name="CoinSprite1" type="Sprite2D" parent="."]
+position = Vector2(1040, 280)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("3_coin_tex")
+
+[node name="CoinSprite2" type="Sprite2D" parent="."]
+position = Vector2(1090, 340)
+scale = Vector2(2.0, 2.0)
+texture = ExtResource("3_coin_tex")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="TitleContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer/TitleContainer"]
+layout_mode = 2
+pivot_offset = Vector2(240, 28)
+theme_override_colors/font_color = Color(1, 0.88, 0.2, 1)
+theme_override_colors/font_shadow_color = Color(0.8, 0.2, 0.1, 0.8)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 54
+text = "SUPER BLUE RUNNER"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="CenterContainer/VBoxContainer/TitleContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "A MARIO-STYLE 2D PLATFORMER ADVENTURE"
+horizontal_alignment = 1
+
+[node name="MenuVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 14
+
+[node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_start")
+text = "START ADVENTURE (WORLD 1-1)"
+
+[node name="LevelSelectLabel" type="Label" parent="CenterContainer/VBoxContainer/MenuVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.95, 1)
+theme_override_font_sizes/font_size = 13
+text = "CHOOSE LEVEL:"
+horizontal_alignment = 1
+
+[node name="LevelSelectHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer/MenuVBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Level1Btn" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox/LevelSelectHBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_lvl")
+text = "WORLD 1-1"
+
+[node name="Level2Btn" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox/LevelSelectHBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_lvl")
+text = "WORLD 1-2"
+
+[node name="Level3Btn" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox/LevelSelectHBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_lvl")
+text = "WORLD 1-3 (BOSS)"
+
+[node name="HelpButton" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_sub")
+text = "HOW TO PLAY & CONTROLS"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer/MenuVBox"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_sub")
+text = "QUIT"
+
+[node name="HelpDialog" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(580, 400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -200.0
+offset_right = 290.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_help_box")
+
+[node name="MarginContainer" type="MarginContainer" parent="HelpDialog"]
+layout_mode = 2
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HelpDialog/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HelpTitle" type="Label" parent="HelpDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+text = "HOW TO PLAY SUPER BLUE RUNNER"
+horizontal_alignment = 1
+
+[node name="HelpContent" type="RichTextLabel" parent="HelpDialog/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[b][color=#00e5ff]CONTROLS:[/color][/b]
+• [b]Move Left / Right:[/b] [b]A / D[/b] or [b]Arrow Keys[/b]
+• [b]Jump:[/b] [b]SPACEBAR[/b], [b]W[/b], or [b]Up Arrow[/b] (hold longer for higher jump!)
+• [b]Pause / Menu:[/b] [b]ESC[/b]
+
+[b][color=#50fa7b]EXCITING MECHANICS:[/color][/b]
+• [b]Stomp on Enemies:[/b] Jump right on top of Goombas & flying bats to crush them and bounce higher!
+• [b]Hit [?] Blocks:[/b] Jump and hit golden question blocks with your head from underneath to collect coins!
+• [b]Spring Pads:[/b] Step on springs to launch super high into the clouds!
+• [b]Collect Coins:[/b] Every 100 coins gives you an extra life!
+• [b]Defeat King Boss in World 1-3:[/b] Land 3 stomps on his head to claim ultimate victory!"
+
+[node name="CloseHelpBtn" type="Button" parent="HelpDialog/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(140, 42)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn_start")
+text = "LET'S JUMP!"
+

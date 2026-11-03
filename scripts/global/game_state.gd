@@ -1,91 +1,163 @@
 extends Node
 
-## Central GameState Singleton for "THE LAST SIGNAL"
-## Manages global puzzle status, inventory/clues, and input registration.
+## Global GameState Singleton for "SUPER BLUE RUNNER"
+## Manages score, coins, lives, level progression, and audio playback.
 
-signal puzzle_solved
-signal clue_inspected(title: String, content: String, clue_id: String)
-signal keypad_opened
-signal ui_state_changed(is_open: bool)
+signal stats_changed
+signal level_completed(level_num: int)
+signal game_over
+signal game_won
 
-# Story / Puzzle Data
-const CORRECT_PASSCODE: String = "7394"
-var is_puzzle_solved: bool = false
-var clues_discovered: Dictionary = {
-	"terminal": false,
-	"whiteboard": false,
-	"bio_shelf": false
-}
+var score: int = 0
+var coins: int = 0
+var lives: int = 3
+var max_lives: int = 3
+var current_level: int = 1
+var total_levels: int = 3
+var unlocked_level: int = 1
 
-# UI & Interaction Tracking
-var is_ui_blocking: bool = false
-var nearby_interactive: Node = null
+# Audio
+var sfx_player: AudioStreamPlayer = null
+var bgm_player: AudioStreamPlayer = null
+var audio_streams: Dictionary = {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	_setup_default_input_actions()
+	_setup_inputs()
+	_setup_audio()
 
-## Ensure required input actions are dynamically registered in Godot's InputMap
-## so the game responds smoothly to WASD, Arrow keys, E, and Escape right away.
-func _setup_default_input_actions() -> void:
-	var default_actions: Dictionary = {
+func _setup_inputs() -> void:
+	var mapping := {
 		"move_left": [KEY_A, KEY_LEFT],
 		"move_right": [KEY_D, KEY_RIGHT],
 		"move_up": [KEY_W, KEY_UP],
 		"move_down": [KEY_S, KEY_DOWN],
-		"interact": [KEY_E, KEY_SPACE, KEY_ENTER],
+		"jump": [KEY_SPACE, KEY_W, KEY_UP],
 		"pause": [KEY_ESCAPE]
 	}
 	
-	for action in default_actions:
+	for action in mapping:
 		if not InputMap.has_action(action):
 			InputMap.add_action(action)
-		for keycode in default_actions[action]:
-			var event := InputEventKey.new()
-			event.physical_keycode = keycode
-			# Only add if not already registered
+		for code in mapping[action]:
+			var ev := InputEventKey.new()
+			ev.physical_keycode = code
 			var existing := InputMap.action_get_events(action)
-			var already_has: bool = false
+			var has_it := false
 			for e in existing:
-				if e is InputEventKey and e.physical_keycode == keycode:
-					already_has = true
+				if e is InputEventKey and e.physical_keycode == code:
+					has_it = true
 					break
-			if not already_has:
-				InputMap.action_add_event(action, event)
+			if not has_it:
+				InputMap.action_add_event(action, ev)
 
-func mark_clue_found(clue_id: String, title: String, content: String) -> void:
-	clues_discovered[clue_id] = true
-	clue_inspected.emit(title, content, clue_id)
-	set_ui_blocking(true)
+func _setup_audio() -> void:
+	sfx_player = AudioStreamPlayer.new()
+	sfx_player.name = "SFX"
+	add_child(sfx_player)
+	
+	bgm_player = AudioStreamPlayer.new()
+	bgm_player.name = "BGM"
+	add_child(bgm_player)
+	
+	var files := {
+		"jump": "res://assets/audio/mario_jump.wav",
+		"coin": "res://assets/audio/mario_coin.wav",
+		"stomp": "res://assets/audio/mario_stomp.wav",
+		"block": "res://assets/audio/mario_block.wav",
+		"spring": "res://assets/audio/mario_spring.wav",
+		"hurt": "res://assets/audio/mario_hurt.wav",
+		"clear": "res://assets/audio/mario_clear.wav",
+		"bgm": "res://assets/audio/mario_bgm.wav"
+	}
+	
+	for k in files:
+		if ResourceLoader.exists(files[k]):
+			audio_streams[k] = load(files[k])
 
-func verify_code(entered_code: String) -> bool:
-	if entered_code == CORRECT_PASSCODE:
-		is_puzzle_solved = true
-		puzzle_solved.emit()
+func play_sfx(s_name: String, vol_db: float = 0.0, pitch: float = 1.0) -> void:
+	if audio_streams.has(s_name) and sfx_player:
+		sfx_player.stream = audio_streams[s_name]
+		sfx_player.volume_db = vol_db
+		sfx_player.pitch_scale = pitch
+		sfx_player.play()
+
+func play_bgm(m_name: String = "bgm", vol_db: float = -6.0) -> void:
+	if audio_streams.has(m_name) and bgm_player:
+		if bgm_player.stream != audio_streams[m_name] or not bgm_player.playing:
+			bgm_player.stream = audio_streams[m_name]
+			bgm_player.volume_db = vol_db
+			bgm_player.play()
+
+func stop_bgm() -> void:
+	if bgm_player and bgm_player.playing:
+		bgm_player.stop()
+
+func add_coin(amount: int = 1) -> void:
+	coins += amount
+	score += amount * 100
+	play_sfx("coin", -2.0)
+	# 100 coins = extra life!
+	if coins >= 100:
+		coins -= 100
+		lives = mini(lives + 1, max_lives)
+		play_sfx("clear", 0.0)
+	stats_changed.emit()
+
+func add_score(amount: int) -> void:
+	score += amount
+	stats_changed.emit()
+
+func take_damage() -> bool:
+	lives -= 1
+	play_sfx("hurt", 2.0)
+	stats_changed.emit()
+	if lives <= 0:
+		handle_game_over()
 		return true
 	return false
 
-func set_ui_blocking(blocking: bool) -> void:
-	is_ui_blocking = blocking
-	ui_state_changed.emit(blocking)
+func handle_game_over() -> void:
+	stop_bgm()
+	game_over.emit()
+	get_tree().change_scene_to_file("res://scenes/ui/platform_game_over.tscn")
 
-func reset_progress() -> void:
-	is_puzzle_solved = false
-	clues_discovered = {
-		"terminal": false,
-		"whiteboard": false,
-		"bio_shelf": false
-	}
-	is_ui_blocking = false
-	nearby_interactive = null
+func win_level() -> void:
+	stop_bgm()
+	play_sfx("clear", 3.0)
+	add_score(1000 * current_level)
+	level_completed.emit(current_level)
+	
+	if current_level >= total_levels:
+		unlocked_level = total_levels
+		get_tree().change_scene_to_file("res://scenes/ui/platform_win.tscn")
+	else:
+		unlocked_level = maxi(unlocked_level, current_level + 1)
+		get_tree().change_scene_to_file("res://scenes/ui/platform_level_clear.tscn")
+
+func next_level() -> void:
+	current_level += 1
+	load_level(current_level)
+
+func restart_current_level() -> void:
+	load_level(current_level)
 
 func start_new_game() -> void:
-	reset_progress()
-	get_tree().change_scene_to_file("res://scenes/levels/lab_room.tscn")
+	score = 0
+	coins = 0
+	lives = 3
+	current_level = 1
+	stats_changed.emit()
+	load_level(1)
 
-func trigger_ending() -> void:
-	get_tree().change_scene_to_file("res://scenes/ui/ending_screen.tscn")
+func load_level(lvl: int) -> void:
+	current_level = lvl
+	var path := "res://scenes/levels/platform_level_%d.tscn" % lvl
+	if ResourceLoader.exists(path):
+		get_tree().change_scene_to_file(path)
+	else:
+		get_tree().change_scene_to_file("res://scenes/levels/platform_level_1.tscn")
 
-func return_to_main_menu() -> void:
-	reset_progress()
-	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+func return_to_menu() -> void:
+	stop_bgm()
+	get_tree().change_scene_to_file("res://scenes/ui/platform_main_menu.tscn")

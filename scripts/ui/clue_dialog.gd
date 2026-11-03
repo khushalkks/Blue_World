@@ -25,14 +25,14 @@ func _on_clue_inspected(title: String, content: String, clue_id: String) -> void
 	title_label.text = title.to_upper()
 	content_label.text = content
 	
-	# Populate explicit, rewarding intel summary box
+	# Populate clear, high-contrast, story-driven intel summary box
 	match clue_id:
 		"terminal":
-			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL (DIGIT 1):[/b][/color] Laboratory Sector is [color=#ffdd44][b]7[/b][/color]. First code digit is [color=#50fa7b][b]7[/b][/color]."
+			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL [DIGIT 1 OF 4]:[/b][/color] Escaped lifeform was locked in Pod [color=#ffdd44][b]#7[/b][/color]. First code slot is [color=#50fa7b][b]7[/b][/color]."
 		"whiteboard":
-			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL (DIGITS 2 & 3):[/b][/color] Cryo Stabilizer ([color=#ffdd44][b]3[/b][/color]) and Peak ([color=#ffdd44][b]9[/b][/color]). Middle digits are [color=#50fa7b][b]3[/b][/color] and [color=#50fa7b][b]9[/b][/color]."
+			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL [DIGITS 2 & 3 OF 4]:[/b][/color] Sedative Recipe is [color=#ffdd44][b]3[/b][/color] Blue Vials & [color=#ffdd44][b]9[/b][/color] Gold Dust. Middle slots are [color=#50fa7b][b]3[/b][/color] and [color=#50fa7b][b]9[/b][/color]."
 		"bio_shelf":
-			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL (DIGIT 4):[/b][/color] Active Telemetry is Channel [color=#ffdd44][b]4[/b][/color]. Final digit is [color=#50fa7b][b]4[/b][/color]."
+			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL [DIGIT 4 OF 4]:[/b][/color] Vance's active SOS radio distress signal is on Channel [color=#ffdd44][b]4[/b][/color]. Final slot is [color=#50fa7b][b]4[/b][/color]."
 		_:
 			intel_label.text = "[color=#00e5ff][b]EXTRACTED INTEL:[/b][/color] Intel recorded in field database."
 	
@@ -40,5 +40,6 @@ func _on_clue_inspected(title: String, content: String, clue_id: String) -> void
 	close_button.grab_focus()
 
 func close_dialog() -> void:
+	GameState.play_sfx("ui_click", -2.0)
 	visible = false
 	GameState.set_ui_blocking(false)
