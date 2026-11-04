@@ -25,6 +25,10 @@ var invuln_timer: float = 0.0
 var facing_right: bool = true
 var target_scale: Vector2 = Vector2.ONE
 var is_dead: bool = false
+var has_plasma_power: bool = false
+var shoot_cooldown: float = 0.0
+
+@onready var camera: Camera2D = get_node_or_null("Camera2D")
 
 func _ready() -> void:
 	add_to_group("player")
@@ -40,9 +44,16 @@ func _physics_process(delta: float) -> void:
 		return
 		
 	# Fall into bottomless pit
-	if position.y > 550.0:
+	if position.y > 600.0:
 		_die()
 		return
+	
+	# Plasma power cooldown & shooting
+	if has_plasma_power:
+		shoot_cooldown -= delta
+		if Input.is_action_just_pressed("fire") and shoot_cooldown <= 0.0:
+			shoot_plasma()
+			shoot_cooldown = 0.28
 	
 	# Invulnerability timer & blinking
 	if is_invulnerable:
@@ -107,6 +118,21 @@ func spring_launch() -> void:
 	velocity.y = spring_velocity
 	GameState.play_sfx("spring", 1.0)
 	target_scale = Vector2(0.7, 1.35)
+
+func grant_plasma_power() -> void:
+	has_plasma_power = true
+	# Golden glowing aura
+	sprite.modulate = Color(1.3, 1.2, 0.4, 1.0)
+	target_scale = Vector2(1.3, 1.3)
+
+func shoot_plasma() -> void:
+	GameState.play_sfx("fireball", 1.0)
+	var proj_scene = load("res://scenes/objects/plasma_projectile.tscn")
+	if proj_scene:
+		var p = proj_scene.instantiate()
+		p.dir = 1.0 if facing_right else -1.0
+		p.position = position + Vector2(18.0 * p.dir, 0)
+		get_parent().add_child(p)
 
 func take_damage(knockback_dir: float = 0.0) -> void:
 	if is_invulnerable or is_dead:

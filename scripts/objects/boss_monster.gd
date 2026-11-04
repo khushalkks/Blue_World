@@ -11,6 +11,7 @@ var hp: int = 3
 @onready var hurt_area: Area2D = $HurtArea
 
 var jump_timer: float = 2.0
+var shoot_timer: float = 3.0
 var move_dir: float = -1.0
 var is_invuln: bool = false
 var is_dead: bool = false
@@ -36,12 +37,18 @@ func _physics_process(delta: float) -> void:
 	# Jump AI timer
 	jump_timer -= delta
 	if jump_timer <= 0.0 and is_on_floor():
-		jump_timer = randf_range(1.8, 2.6)
-		velocity.y = -480.0
-		# Chance to switch direction
+		jump_timer = randf_range(1.6, 2.4)
+		velocity.y = -520.0
 		if randf() > 0.4:
 			move_dir = -move_dir
 		GameState.play_sfx("spring", -4.0, 0.7)
+		
+	# Phase 2 Fireball Attack
+	if hp < max_hp:
+		shoot_timer -= delta
+		if shoot_timer <= 0.0:
+			shoot_timer = randf_range(2.5, 3.8)
+			_boss_shoot_fireball()
 		
 	# Reverse on walls
 	if is_on_wall():
@@ -51,6 +58,15 @@ func _physics_process(delta: float) -> void:
 	sprite.flip_h = move_dir > 0.0
 	
 	move_and_slide()
+
+func _boss_shoot_fireball() -> void:
+	GameState.play_sfx("fireball", 2.0, 0.75)
+	var proj_scene = load("res://scenes/objects/plasma_projectile.tscn")
+	if proj_scene:
+		var p = proj_scene.instantiate()
+		p.dir = move_dir
+		p.position = position + Vector2(24.0 * move_dir, 0)
+		get_parent().add_child(p)
 
 func die_from_stomp() -> void:
 	if is_invuln or is_dead:
@@ -64,16 +80,23 @@ func die_from_stomp() -> void:
 		_die_boss()
 		return
 		
-	# Boss hit reaction (invuln flash, faster speed!)
+	# Boss hit reaction (invuln flash, faster speed, enrage color!)
 	is_invuln = true
-	speed += 40.0
-	velocity.y = -300.0
+	speed += 50.0
+	velocity.y = -320.0
+	
+	# Summon a flying bat minion in phase 2!
+	var flyer_scene = load("res://scenes/objects/enemy_flyer.tscn")
+	if flyer_scene:
+		var f = flyer_scene.instantiate()
+		f.position = position + Vector2(randf_range(-60, 60), -80)
+		get_parent().add_child(f)
 	
 	var tw = create_tween()
-	tw.tween_property(sprite, "modulate", Color(1.0, 0.2, 0.2, 1.0), 0.1)
-	tw.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.1)
-	tw.tween_property(sprite, "modulate", Color(1.0, 0.2, 0.2, 1.0), 0.1)
-	tw.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.1)
+	tw.tween_property(sprite, "modulate", Color(1.5, 0.3, 0.2, 1.0), 0.15)
+	tw.tween_property(sprite, "modulate", Color(1.0, 1.0, 1.0, 1.0), 0.15)
+	tw.tween_property(sprite, "modulate", Color(1.5, 0.3, 0.2, 1.0), 0.15)
+	tw.tween_property(sprite, "modulate", Color(1.2, 0.4, 0.3, 1.0), 0.2)
 	
 	await get_tree().create_timer(1.2).timeout
 	is_invuln = false
