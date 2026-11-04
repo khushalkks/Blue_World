@@ -1,0 +1,175 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_lava.png" id="3_lava"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="4_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="5_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="6_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/thwomp_trap.tscn" id="7_thwomp"]
+[ext_resource type="PackedScene" path="res://scenes/objects/fire_bar.tscn" id="8_firebar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/falling_platform.tscn" id="9_fall"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="10_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="11_spring"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="12_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="13_hud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_320_96"]
+size = Vector2(320, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_400_48"]
+size = Vector2(400, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_380_96"]
+size = Vector2(380, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_520_96"]
+size = Vector2(520, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lava_1600"]
+size = Vector2(1600, 64)
+
+[node name="PlatformLevel4" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 4
+music_track = "suspense"
+
+[node name="FoundrySky" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="FoundrySky"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.16, 0.06, 0.06, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="StartLedge" type="StaticBody2D" parent="Platforms"]
+position = Vector2(160, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StartLedge"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StartLedge"]
+shape = SubResource("RectangleShape2D_p_320_96")
+
+[node name="ThwompRunway" type="StaticBody2D" parent="Platforms"]
+position = Vector2(580, 460)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/ThwompRunway"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 400, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ThwompRunway"]
+shape = SubResource("RectangleShape2D_p_400_48")
+
+[node name="FireBarSanctuary" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1320, 420)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/FireBarSanctuary"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 380, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/FireBarSanctuary"]
+shape = SubResource("RectangleShape2D_p_380_96")
+
+[node name="ExitLedge" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2150, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/ExitLedge"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 520, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ExitLedge"]
+shape = SubResource("RectangleShape2D_p_520_96")
+
+[node name="LavaHazard" type="Area2D" parent="." groups=["hazard"]]
+position = Vector2(1100, 530)
+collision_layer = 32
+collision_mask = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="LavaHazard"]
+texture_repeat = 2
+texture = ExtResource("3_lava")
+region_enabled = true
+region_rect = Rect2(0, 0, 1600, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LavaHazard"]
+shape = SubResource("RectangleShape2D_lava_1600")
+
+[node name="Thwomp1" parent="." instance=ExtResource("7_thwomp")]
+position = Vector2(480, 220)
+
+[node name="Thwomp2" parent="." instance=ExtResource("7_thwomp")]
+position = Vector2(680, 220)
+
+[node name="Crumble1" parent="." instance=ExtResource("9_fall")]
+position = Vector2(880, 440)
+
+[node name="Crumble2" parent="." instance=ExtResource("9_fall")]
+position = Vector2(1000, 440)
+
+[node name="FireBar1" parent="." instance=ExtResource("8_firebar")]
+position = Vector2(1250, 340)
+rotation_speed = 2.4
+
+[node name="FireBar2" parent="." instance=ExtResource("8_firebar")]
+position = Vector2(1400, 340)
+rotation_speed = -2.4
+
+[node name="SpringPad1" parent="." instance=ExtResource("11_spring")]
+position = Vector2(1480, 360)
+
+[node name="CrumbleBridge3" parent="." instance=ExtResource("9_fall")]
+position = Vector2(1700, 380)
+
+[node name="CrumbleBridge4" parent="." instance=ExtResource("9_fall")]
+position = Vector2(1820, 420)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(480, 380)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(680, 380)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1320, 280)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1700, 320)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1820, 360)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("10_goomba")]
+position = Vector2(2050, 410)
+
+[node name="GoalFlag" parent="." instance=ExtResource("12_flag")]
+position = Vector2(2320, 388)
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+position = Vector2(80, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("13_hud")]

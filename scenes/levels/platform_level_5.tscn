@@ -1,0 +1,178 @@
+[gd_scene load_steps=17 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_lava.png" id="3_lava"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="4_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="5_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="6_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="7_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_star.tscn" id="8_star"]
+[ext_resource type="PackedScene" path="res://scenes/objects/fire_bar.tscn" id="9_firebar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/thwomp_trap.tscn" id="10_thwomp"]
+[ext_resource type="PackedScene" path="res://scenes/objects/boss_monster.tscn" id="11_boss"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="12_hud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_320_96"]
+size = Vector2(320, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_220_48"]
+size = Vector2(220, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_860_96"]
+size = Vector2(860, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lava_800"]
+size = Vector2(800, 64)
+
+[node name="PlatformLevel5" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 5
+music_track = "bgm"
+
+[node name="CastleSky" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="CastleSky"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.12, 0.02, 0.05, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="CastleStart" type="StaticBody2D" parent="Platforms"]
+position = Vector2(160, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/CastleStart"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/CastleStart"]
+shape = SubResource("RectangleShape2D_p_320_96")
+
+[node name="Bridge1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(490, 380)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Bridge1"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 220, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Bridge1"]
+shape = SubResource("RectangleShape2D_p_220_48")
+
+[node name="Bridge2" type="StaticBody2D" parent="Platforms"]
+position = Vector2(840, 320)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Bridge2"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 220, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Bridge2"]
+shape = SubResource("RectangleShape2D_p_220_48")
+
+[node name="BossArenaFloor" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1800, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/BossArenaFloor"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 860, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossArenaFloor"]
+shape = SubResource("RectangleShape2D_p_860_96")
+
+[node name="BossArenaStepLeft" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1500, 360)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/BossArenaStepLeft"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 180, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossArenaStepLeft"]
+shape = SubResource("RectangleShape2D_p_220_48")
+
+[node name="BossArenaStepRight" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2100, 360)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/BossArenaStepRight"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 180, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossArenaStepRight"]
+shape = SubResource("RectangleShape2D_p_220_48")
+
+[node name="LavaHazard" type="Area2D" parent="." groups=["hazard"]]
+position = Vector2(660, 530)
+collision_layer = 32
+collision_mask = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="LavaHazard"]
+texture_repeat = 2
+texture = ExtResource("3_lava")
+region_enabled = true
+region_rect = Rect2(0, 0, 800, 64)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LavaHazard"]
+shape = SubResource("RectangleShape2D_lava_800")
+
+[node name="ThwompEntry" parent="." instance=ExtResource("10_thwomp")]
+position = Vector2(490, 160)
+
+[node name="FireBarBridge" parent="." instance=ExtResource("9_firebar")]
+position = Vector2(840, 240)
+rotation_speed = 2.0
+
+[node name="PowerStarBeforeBoss" parent="." instance=ExtResource("8_star")]
+position = Vector2(1200, 320)
+
+[node name="QBlock1" parent="." instance=ExtResource("7_qblock")]
+position = Vector2(1800, 320)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(440, 310)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(540, 310)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(840, 180)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1500, 290)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(2100, 290)
+
+[node name="BossMonster" parent="." instance=ExtResource("11_boss")]
+position = Vector2(1950, 400)
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+position = Vector2(80, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("12_hud")]

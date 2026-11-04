@@ -13,7 +13,7 @@ var coins: int = 0
 var lives: int = 3
 var max_lives: int = 3
 var current_level: int = 1
-var total_levels: int = 3
+var total_levels: int = 5
 var unlocked_level: int = 1
 
 # Audio
@@ -33,6 +33,7 @@ func _setup_inputs() -> void:
 		"move_up": [KEY_W, KEY_UP],
 		"move_down": [KEY_S, KEY_DOWN],
 		"jump": [KEY_SPACE, KEY_W, KEY_UP],
+		"fire": [KEY_F, KEY_SHIFT, KEY_J],
 		"pause": [KEY_ESCAPE]
 	}
 	
@@ -68,7 +69,12 @@ func _setup_audio() -> void:
 		"spring": "res://assets/audio/mario_spring.wav",
 		"hurt": "res://assets/audio/mario_hurt.wav",
 		"clear": "res://assets/audio/mario_clear.wav",
-		"bgm": "res://assets/audio/mario_bgm.wav"
+		"bgm": "res://assets/audio/mario_bgm.wav",
+		"fireball": "res://assets/audio/mario_fireball.wav",
+		"thwomp": "res://assets/audio/mario_thwomp.wav",
+		"crumble": "res://assets/audio/mario_crumble.wav",
+		"powerup": "res://assets/audio/mario_powerup.wav",
+		"suspense": "res://assets/audio/mario_suspense.wav"
 	}
 	
 	for k in files:

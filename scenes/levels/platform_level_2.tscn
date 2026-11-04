@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=17 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
 [ext_resource type="Texture2D" path="res://assets/platformer/tile_dirt.png" id="2_dirt"]
@@ -11,8 +11,9 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="9_flyer"]
 [ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="10_spring"]
 [ext_resource type="PackedScene" path="res://scenes/objects/spikes.tscn" id="11_spike"]
-[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="12_flag"]
-[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="13_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="12_move"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="13_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="14_hud"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p_400_96"]
 size = Vector2(400, 96)
@@ -32,6 +33,7 @@ size = Vector2(500, 96)
 [node name="PlatformLevel2" type="Node2D"]
 script = ExtResource("1_ctrl")
 level_number = 2
+music_track = "bgm"
 
 [node name="CaveBackground" type="CanvasLayer" parent="."]
 layer = -100
@@ -114,20 +116,6 @@ region_rect = Rect2(0, 0, 140, 48)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/PillarJump"]
 shape = SubResource("RectangleShape2D_p_140_48")
 
-[node name="SpringLedge" type="StaticBody2D" parent="Platforms"]
-position = Vector2(1650, 460)
-collision_layer = 2
-collision_mask = 0
-
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/SpringLedge"]
-texture_repeat = 2
-texture = ExtResource("3_stone")
-region_enabled = true
-region_rect = Rect2(0, 0, 140, 48)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/SpringLedge"]
-shape = SubResource("RectangleShape2D_p_140_48")
-
 [node name="ExitPlatform" type="StaticBody2D" parent="Platforms"]
 position = Vector2(2150, 480)
 collision_layer = 2
@@ -142,6 +130,11 @@ region_rect = Rect2(0, 0, 500, 96)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ExitPlatform"]
 shape = SubResource("RectangleShape2D_p_500_96")
 
+[node name="MovingHoverLedge" parent="." instance=ExtResource("12_move")]
+position = Vector2(1580, 420)
+move_offset = Vector2(200, 0)
+speed = 70.0
+
 [node name="Spikes1" parent="." instance=ExtResource("11_spike")]
 position = Vector2(920, 440)
 
@@ -153,9 +146,6 @@ position = Vector2(1040, 440)
 
 [node name="SpringPad1" parent="." instance=ExtResource("10_spring")]
 position = Vector2(340, 420)
-
-[node name="SpringPad2" parent="." instance=ExtResource("10_spring")]
-position = Vector2(1650, 424)
 
 [node name="QBlock1" parent="." instance=ExtResource("7_qblock")]
 position = Vector2(560, 240)
@@ -178,13 +168,10 @@ position = Vector2(980, 220)
 position = Vector2(1040, 220)
 
 [node name="Coin6" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1650, 220)
+position = Vector2(1650, 360)
 
 [node name="Coin7" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1740, 180)
-
-[node name="Coin8" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1820, 220)
+position = Vector2(1740, 360)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -200,10 +187,10 @@ position = Vector2(1200, 260)
 [node name="Goomba2" parent="Enemies" instance=ExtResource("8_goomba")]
 position = Vector2(2050, 410)
 
-[node name="GoalFlag" parent="." instance=ExtResource("12_flag")]
+[node name="GoalFlag" parent="." instance=ExtResource("13_flag")]
 position = Vector2(2320, 388)
 
 [node name="Player" parent="." instance=ExtResource("5_player")]
 position = Vector2(80, 400)
 
-[node name="PlatformHUD" parent="." instance=ExtResource("13_hud")]
+[node name="PlatformHUD" parent="." instance=ExtResource("14_hud")]
