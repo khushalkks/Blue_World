@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
 [ext_resource type="Texture2D" path="res://assets/platformer/tile_grass.png" id="2_grass"]
@@ -12,6 +12,10 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="10_spring"]
 [ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="11_flag"]
 [ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="12_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/warp_pipe.tscn" id="13_pipe"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="14_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/cannon_blaster.tscn" id="15_cannon"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="16_magnet"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p_700_96"]
 size = Vector2(700, 96)
@@ -57,15 +61,11 @@ position = Vector2(650, 70)
 texture = ExtResource("5_cloud")
 
 [node name="Cloud3" type="Sprite2D" parent="Clouds"]
-position = Vector2(1100, 120)
+position = Vector2(1200, 90)
 texture = ExtResource("5_cloud")
 
 [node name="Cloud4" type="Sprite2D" parent="Clouds"]
-position = Vector2(1600, 80)
-texture = ExtResource("5_cloud")
-
-[node name="Cloud5" type="Sprite2D" parent="Clouds"]
-position = Vector2(2100, 110)
+position = Vector2(1800, 60)
 texture = ExtResource("5_cloud")
 
 [node name="Platforms" type="Node2D" parent="."]
@@ -154,6 +154,20 @@ region_rect = Rect2(0, 0, 620, 96)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundEnd"]
 shape = SubResource("RectangleShape2D_p_620_96")
 
+[node name="SecretWarpPipe" parent="." instance=ExtResource("13_pipe")]
+position = Vector2(640, 400)
+target_scene = "res://scenes/levels/bonus_coin_room.tscn"
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("14_checkpoint")]
+position = Vector2(1040, 400)
+
+[node name="CannonBlaster" parent="." instance=ExtResource("15_cannon")]
+position = Vector2(1480, 408)
+fire_dir = -1.0
+
+[node name="PowerupMagnet" parent="." instance=ExtResource("16_magnet")]
+position = Vector2(1160, 290)
+
 [node name="QBlock1" parent="." instance=ExtResource("8_qblock")]
 position = Vector2(400, 340)
 
@@ -181,7 +195,7 @@ position = Vector2(760, 330)
 position = Vector2(1100, 290)
 
 [node name="Coin5" parent="Coins" instance=ExtResource("7_coin")]
-position = Vector2(1160, 290)
+position = Vector2(1160, 250)
 
 [node name="Coin6" parent="Coins" instance=ExtResource("7_coin")]
 position = Vector2(1220, 290)
@@ -195,19 +209,16 @@ position = Vector2(1720, 160)
 [node name="Coin9" parent="Coins" instance=ExtResource("7_coin")]
 position = Vector2(1780, 160)
 
-[node name="Coin10" parent="Coins" instance=ExtResource("7_coin")]
-position = Vector2(1840, 160)
-
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Goomba1" parent="Enemies" instance=ExtResource("9_goomba")]
-position = Vector2(520, 410)
+position = Vector2(480, 410)
 
 [node name="Goomba2" parent="Enemies" instance=ExtResource("9_goomba")]
-position = Vector2(980, 410)
+position = Vector2(940, 410)
 
 [node name="Goomba3" parent="Enemies" instance=ExtResource("9_goomba")]
-position = Vector2(1280, 410)
+position = Vector2(1260, 410)
 
 [node name="Goomba4" parent="Enemies" instance=ExtResource("9_goomba")]
 position = Vector2(1980, 410)

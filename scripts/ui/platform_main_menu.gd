@@ -47,6 +47,7 @@ func _load_level(lvl: int) -> void:
 	GameState.score = 0
 	GameState.coins = 0
 	GameState.lives = 3
+	GameState.clear_checkpoint()
 	GameState.load_level(lvl)
 
 func _on_help_pressed() -> void:

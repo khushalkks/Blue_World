@@ -1,0 +1,1163 @@
+import os
+
+def build_bonus_room():
+    content = """[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="3_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="4_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="5_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="6_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/warp_pipe.tscn" id="7_pipe"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="8_magnet"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="9_hud"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(960, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(64, 540)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_step"]
+size = Vector2(240, 36)
+
+[node name="BonusCoinRoom" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 1
+music_track = "bgm"
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.05, 0.12, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="Platforms"]
+position = Vector2(480, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Floor"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Floor"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Ceiling" type="StaticBody2D" parent="Platforms"]
+position = Vector2(480, 30)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ceiling"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 960, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ceiling"]
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="LeftWall" type="StaticBody2D" parent="Platforms"]
+position = Vector2(20, 270)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/LeftWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="StaticBody2D" parent="Platforms"]
+position = Vector2(940, 270)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/RightWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="MidStep" type="StaticBody2D" parent="Platforms"]
+position = Vector2(480, 320)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/MidStep"]
+texture_repeat = 2
+texture = ExtResource("3_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 240, 36)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/MidStep"]
+shape = SubResource("RectangleShape2D_step")
+
+[node name="EntrancePipe" parent="." instance=ExtResource("7_pipe")]
+position = Vector2(100, 110)
+is_exit_only = true
+
+[node name="ExitPipe" parent="." instance=ExtResource("7_pipe")]
+position = Vector2(850, 400)
+target_scene = "RETURN"
+
+[node name="PowerupMagnet" parent="." instance=ExtResource("8_magnet")]
+position = Vector2(480, 270)
+
+[node name="QBlock1" parent="." instance=ExtResource("6_qblock")]
+position = Vector2(420, 190)
+
+[node name="QBlock2" parent="." instance=ExtResource("6_qblock")]
+position = Vector2(480, 190)
+
+[node name="QBlock3" parent="." instance=ExtResource("6_qblock")]
+position = Vector2(540, 190)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(220, 390)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(260, 370)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(300, 350)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(340, 370)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(380, 390)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(420, 390)
+
+[node name="Coin7" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(460, 390)
+
+[node name="Coin8" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(500, 390)
+
+[node name="Coin9" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(540, 390)
+
+[node name="Coin10" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(580, 370)
+
+[node name="Coin11" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(620, 350)
+
+[node name="Coin12" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(660, 370)
+
+[node name="Coin13" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(700, 390)
+
+[node name="Coin14" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(400, 270)
+
+[node name="Coin15" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(440, 270)
+
+[node name="Coin16" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(520, 270)
+
+[node name="Coin17" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(560, 270)
+
+[node name="Coin18" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(480, 130)
+
+[node name="Coin19" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(440, 140)
+
+[node name="Coin20" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(520, 140)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(100, 160)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("9_hud")]
+"""
+    with open("scenes/levels/bonus_coin_room.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Bonus Coin Room generated!")
+
+def build_level_1():
+    content = """[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_grass.png" id="2_grass"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_dirt.png" id="3_dirt"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="4_brick"]
+[ext_resource type="Texture2D" path="res://assets/platformer/cloud.png" id="5_cloud"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="6_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="7_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="8_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="9_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="10_spring"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="11_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="12_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/warp_pipe.tscn" id="13_pipe"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="14_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/cannon_blaster.tscn" id="15_cannon"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="16_magnet"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_700_96"]
+size = Vector2(700, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_540_96"]
+size = Vector2(540, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_180_48"]
+size = Vector2(180, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_160_96"]
+size = Vector2(160, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_240_48"]
+size = Vector2(240, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_620_96"]
+size = Vector2(620, 96)
+
+[node name="PlatformLevel1" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 1
+music_track = "bgm"
+
+[node name="Sky" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="Sky"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.35, 0.68, 0.98, 1)
+
+[node name="Clouds" type="Node2D" parent="."]
+z_index = -50
+
+[node name="Cloud1" type="Sprite2D" parent="Clouds"]
+position = Vector2(200, 100)
+texture = ExtResource("5_cloud")
+
+[node name="Cloud2" type="Sprite2D" parent="Clouds"]
+position = Vector2(650, 70)
+texture = ExtResource("5_cloud")
+
+[node name="Cloud3" type="Sprite2D" parent="Clouds"]
+position = Vector2(1200, 90)
+texture = ExtResource("5_cloud")
+
+[node name="Cloud4" type="Sprite2D" parent="Clouds"]
+position = Vector2(1800, 60)
+texture = ExtResource("5_cloud")
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Ground1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(350, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground1"]
+texture_repeat = 2
+texture = ExtResource("2_grass")
+region_enabled = true
+region_rect = Rect2(0, 0, 700, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground1"]
+shape = SubResource("RectangleShape2D_p_700_96")
+
+[node name="Ground2" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1100, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground2"]
+texture_repeat = 2
+texture = ExtResource("2_grass")
+region_enabled = true
+region_rect = Rect2(0, 0, 540, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground2"]
+shape = SubResource("RectangleShape2D_p_540_96")
+
+[node name="Step1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1160, 350)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Step1"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 180, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Step1"]
+shape = SubResource("RectangleShape2D_p_180_48")
+
+[node name="SpringIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1540, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/SpringIsland"]
+texture_repeat = 2
+texture = ExtResource("2_grass")
+region_enabled = true
+region_rect = Rect2(0, 0, 160, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/SpringIsland"]
+shape = SubResource("RectangleShape2D_p_160_96")
+
+[node name="SkyBonus" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1740, 220)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/SkyBonus"]
+texture_repeat = 2
+texture = ExtResource("2_grass")
+region_enabled = true
+region_rect = Rect2(0, 0, 240, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/SkyBonus"]
+shape = SubResource("RectangleShape2D_p_240_48")
+
+[node name="GroundEnd" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2120, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/GroundEnd"]
+texture_repeat = 2
+texture = ExtResource("2_grass")
+region_enabled = true
+region_rect = Rect2(0, 0, 620, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundEnd"]
+shape = SubResource("RectangleShape2D_p_620_96")
+
+[node name="SecretWarpPipe" parent="." instance=ExtResource("13_pipe")]
+position = Vector2(640, 400)
+target_scene = "res://scenes/levels/bonus_coin_room.tscn"
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("14_checkpoint")]
+position = Vector2(1040, 400)
+
+[node name="CannonBlaster" parent="." instance=ExtResource("15_cannon")]
+position = Vector2(1480, 408)
+fire_dir = -1.0
+
+[node name="PowerupMagnet" parent="." instance=ExtResource("16_magnet")]
+position = Vector2(1160, 290)
+
+[node name="QBlock1" parent="." instance=ExtResource("8_qblock")]
+position = Vector2(400, 340)
+
+[node name="QBlock2" parent="." instance=ExtResource("8_qblock")]
+position = Vector2(470, 340)
+
+[node name="QBlock3" parent="." instance=ExtResource("8_qblock")]
+position = Vector2(540, 340)
+
+[node name="SpringPad" parent="." instance=ExtResource("10_spring")]
+position = Vector2(1540, 420)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(280, 390)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(330, 370)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(760, 330)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1100, 290)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1160, 250)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1220, 290)
+
+[node name="Coin7" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1660, 160)
+
+[node name="Coin8" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1720, 160)
+
+[node name="Coin9" parent="Coins" instance=ExtResource("7_coin")]
+position = Vector2(1780, 160)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("9_goomba")]
+position = Vector2(480, 410)
+
+[node name="Goomba2" parent="Enemies" instance=ExtResource("9_goomba")]
+position = Vector2(940, 410)
+
+[node name="Goomba3" parent="Enemies" instance=ExtResource("9_goomba")]
+position = Vector2(1260, 410)
+
+[node name="Goomba4" parent="Enemies" instance=ExtResource("9_goomba")]
+position = Vector2(1980, 410)
+
+[node name="GoalFlag" parent="." instance=ExtResource("11_flag")]
+position = Vector2(2340, 388)
+
+[node name="Player" parent="." instance=ExtResource("6_player")]
+position = Vector2(80, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("12_hud")]
+"""
+    with open("scenes/levels/platform_level_1.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Level 1 generated!")
+
+def build_level_2():
+    content = """[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_dirt.png" id="2_dirt"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="3_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="4_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="5_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="6_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="7_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="8_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="9_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="10_spring"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spikes.tscn" id="11_spike"]
+[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="12_move"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="13_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="14_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="15_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/rainbow_star.tscn" id="16_rstar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/cannon_blaster.tscn" id="17_cannon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_400_96"]
+size = Vector2(400, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_220_48"]
+size = Vector2(220, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_320_96"]
+size = Vector2(320, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_140_48"]
+size = Vector2(140, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_500_96"]
+size = Vector2(500, 96)
+
+[node name="PlatformLevel2" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 2
+music_track = "bgm"
+
+[node name="CavernBg" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="CavernBg"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.1, 0.12, 0.22, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Ground1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(200, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground1"]
+texture_repeat = 2
+texture = ExtResource("3_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 400, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground1"]
+shape = SubResource("RectangleShape2D_p_400_96")
+
+[node name="Ledge1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(540, 360)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ledge1"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 220, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ledge1"]
+shape = SubResource("RectangleShape2D_p_220_48")
+
+[node name="MovingPlatform" parent="Platforms" instance=ExtResource("12_move")]
+position = Vector2(850, 380)
+move_distance = 180.0
+move_speed = 65.0
+horizontal = true
+
+[node name="Ground2" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1200, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground2"]
+texture_repeat = 2
+texture = ExtResource("3_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground2"]
+shape = SubResource("RectangleShape2D_p_320_96")
+
+[node name="LedgeHigh" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1520, 320)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/LedgeHigh"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 140, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/LedgeHigh"]
+shape = SubResource("RectangleShape2D_p_140_48")
+
+[node name="GroundEnd" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1950, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/GroundEnd"]
+texture_repeat = 2
+texture = ExtResource("3_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 500, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundEnd"]
+shape = SubResource("RectangleShape2D_p_500_96")
+
+[node name="Spikes1" parent="." instance=ExtResource("11_spike")]
+position = Vector2(400, 420)
+
+[node name="Spikes2" parent="." instance=ExtResource("11_spike")]
+position = Vector2(432, 420)
+
+[node name="Spikes3" parent="." instance=ExtResource("11_spike")]
+position = Vector2(1360, 420)
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("15_checkpoint")]
+position = Vector2(1150, 400)
+
+[node name="RainbowStar" parent="." instance=ExtResource("16_rstar")]
+position = Vector2(850, 260)
+
+[node name="CannonBlaster" parent="." instance=ExtResource("17_cannon")]
+position = Vector2(1520, 272)
+fire_dir = -1.0
+
+[node name="QBlock1" parent="." instance=ExtResource("7_qblock")]
+position = Vector2(480, 260)
+
+[node name="QBlock2" parent="." instance=ExtResource("7_qblock")]
+position = Vector2(1200, 360)
+
+[node name="SpringPad" parent="." instance=ExtResource("10_spring")]
+position = Vector2(1280, 420)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(280, 390)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(540, 300)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(850, 200)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1150, 320)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1520, 220)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("6_coin")]
+position = Vector2(1820, 390)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("8_goomba")]
+position = Vector2(300, 410)
+
+[node name="Goomba2" parent="Enemies" instance=ExtResource("8_goomba")]
+position = Vector2(1120, 410)
+
+[node name="Goomba3" parent="Enemies" instance=ExtResource("8_goomba")]
+position = Vector2(1850, 410)
+
+[node name="Flyer1" parent="Enemies" instance=ExtResource("9_flyer")]
+position = Vector2(660, 280)
+
+[node name="Flyer2" parent="Enemies" instance=ExtResource("9_flyer")]
+position = Vector2(1380, 260)
+
+[node name="GoalFlag" parent="." instance=ExtResource("13_flag")]
+position = Vector2(2120, 388)
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+position = Vector2(60, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("14_hud")]
+"""
+    with open("scenes/levels/platform_level_2.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Level 2 generated!")
+
+def build_level_3():
+    content = """[gd_scene load_steps=20 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="3_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="4_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="5_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="6_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="7_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="8_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/falling_platform.tscn" id="9_falling"]
+[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="10_move"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spikes.tscn" id="11_spike"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="12_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="13_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_star.tscn" id="14_star"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="15_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/warp_pipe.tscn" id="16_pipe"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="17_magnet"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_360_96"]
+size = Vector2(360, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_200_48"]
+size = Vector2(200, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_520_96"]
+size = Vector2(520, 96)
+
+[node name="PlatformLevel3" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 3
+music_track = "suspense"
+
+[node name="AbyssBg" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="AbyssBg"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.04, 0.05, 0.12, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="StartIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(180, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StartIsland"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 360, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StartIsland"]
+shape = SubResource("RectangleShape2D_p_360_96")
+
+[node name="MidRest" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1100, 440)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/MidRest"]
+texture_repeat = 2
+texture = ExtResource("3_brick")
+region_enabled = true
+region_rect = Rect2(0, 0, 200, 48)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/MidRest"]
+shape = SubResource("RectangleShape2D_p_200_48")
+
+[node name="EndIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2060, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/EndIsland"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 520, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/EndIsland"]
+shape = SubResource("RectangleShape2D_p_520_96")
+
+[node name="Crumble1" parent="." instance=ExtResource("9_falling")]
+position = Vector2(430, 430)
+
+[node name="Crumble2" parent="." instance=ExtResource("9_falling")]
+position = Vector2(550, 390)
+
+[node name="Crumble3" parent="." instance=ExtResource("9_falling")]
+position = Vector2(670, 350)
+
+[node name="MovingPlatformAbyss" parent="." instance=ExtResource("10_move")]
+position = Vector2(850, 380)
+move_distance = 140.0
+move_speed = 70.0
+horizontal = true
+
+[node name="Crumble4" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1320, 420)
+
+[node name="Crumble5" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1460, 380)
+
+[node name="Crumble6" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1600, 340)
+
+[node name="MovingVertical" parent="." instance=ExtResource("10_move")]
+position = Vector2(1740, 400)
+move_distance = 110.0
+move_speed = 60.0
+horizontal = false
+
+[node name="WarpPipe" parent="." instance=ExtResource("16_pipe")]
+position = Vector2(300, 400)
+target_scene = "res://scenes/levels/bonus_coin_room.tscn"
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("15_checkpoint")]
+position = Vector2(1100, 384)
+
+[node name="PowerupMagnet" parent="." instance=ExtResource("17_magnet")]
+position = Vector2(670, 270)
+
+[node name="PowerupStar" parent="." instance=ExtResource("14_star")]
+position = Vector2(1100, 290)
+
+[node name="Spikes1" parent="." instance=ExtResource("11_spike")]
+position = Vector2(1920, 420)
+
+[node name="Spikes2" parent="." instance=ExtResource("11_spike")]
+position = Vector2(1952, 420)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(430, 370)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(550, 330)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(670, 290)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(850, 310)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1320, 360)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1460, 320)
+
+[node name="Coin7" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1600, 280)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Flyer1" parent="Enemies" instance=ExtResource("8_flyer")]
+position = Vector2(550, 240)
+
+[node name="Flyer2" parent="Enemies" instance=ExtResource("8_flyer")]
+position = Vector2(1460, 220)
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("7_goomba")]
+position = Vector2(2040, 410)
+
+[node name="GoalFlag" parent="." instance=ExtResource("12_flag")]
+position = Vector2(2240, 388)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(60, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("13_hud")]
+"""
+    with open("scenes/levels/platform_level_3.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Level 3 generated!")
+
+def build_level_4():
+    content = """[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="3_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="4_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="5_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="6_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="7_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/thwomp_trap.tscn" id="8_thwomp"]
+[ext_resource type="PackedScene" path="res://scenes/objects/fire_bar.tscn" id="9_firebar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="10_move"]
+[ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="11_flag"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="12_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="13_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/rainbow_star.tscn" id="14_rstar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/cannon_blaster.tscn" id="15_cannon"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_380_96"]
+size = Vector2(380, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_460_96"]
+size = Vector2(460, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_520_96"]
+size = Vector2(520, 96)
+
+[node name="PlatformLevel4" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 4
+music_track = "suspense"
+
+[node name="LavaBg" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="LavaBg"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.22, 0.05, 0.05, 1)
+
+[node name="LavaGlow" type="ColorRect" parent="LavaBg"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+color = Color(1.0, 0.25, 0.0, 0.6)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Ground1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(190, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground1"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 380, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground1"]
+shape = SubResource("RectangleShape2D_p_380_96")
+
+[node name="GroundMid" type="StaticBody2D" parent="Platforms"]
+position = Vector2(980, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/GroundMid"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 460, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundMid"]
+shape = SubResource("RectangleShape2D_p_460_96")
+
+[node name="GroundEnd" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1900, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/GroundEnd"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 520, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundEnd"]
+shape = SubResource("RectangleShape2D_p_520_96")
+
+[node name="MovingPlatform1" parent="Platforms" instance=ExtResource("10_move")]
+position = Vector2(500, 430)
+move_distance = 140.0
+move_speed = 70.0
+horizontal = true
+
+[node name="MovingPlatform2" parent="Platforms" instance=ExtResource("10_move")]
+position = Vector2(1420, 430)
+move_distance = 150.0
+move_speed = 75.0
+horizontal = true
+
+[node name="Thwomp1" parent="." instance=ExtResource("8_thwomp")]
+position = Vector2(300, 160)
+
+[node name="Thwomp2" parent="." instance=ExtResource("8_thwomp")]
+position = Vector2(860, 160)
+
+[node name="Thwomp3" parent="." instance=ExtResource("8_thwomp")]
+position = Vector2(1100, 160)
+
+[node name="FireBar1" parent="." instance=ExtResource("9_firebar")]
+position = Vector2(980, 390)
+rotation_speed = 2.4
+
+[node name="FireBar2" parent="." instance=ExtResource("9_firebar")]
+position = Vector2(1740, 390)
+rotation_speed = -2.6
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("13_checkpoint")]
+position = Vector2(980, 400)
+
+[node name="RainbowStar" parent="." instance=ExtResource("14_rstar")]
+position = Vector2(500, 280)
+
+[node name="CannonBlaster" parent="." instance=ExtResource("15_cannon")]
+position = Vector2(1580, 408)
+fire_dir = -1.0
+
+[node name="QBlock1" parent="." instance=ExtResource("6_qblock")]
+position = Vector2(180, 330)
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(250, 390)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(500, 350)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(920, 390)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1040, 390)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1420, 350)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("7_goomba")]
+position = Vector2(1750, 410)
+
+[node name="GoalFlag" parent="." instance=ExtResource("11_flag")]
+position = Vector2(2080, 388)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(60, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("12_hud")]
+"""
+    with open("scenes/levels/platform_level_4.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Level 4 generated!")
+
+def build_level_5():
+    content = """[gd_scene load_steps=19 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
+[ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
+[ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="3_brick"]
+[ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="4_player"]
+[ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="5_coin"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="6_qblock"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="7_goomba"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="8_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/thwomp_trap.tscn" id="9_thwomp"]
+[ext_resource type="PackedScene" path="res://scenes/objects/fire_bar.tscn" id="10_firebar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/falling_platform.tscn" id="11_falling"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_star.tscn" id="12_star"]
+[ext_resource type="PackedScene" path="res://scenes/objects/boss_monster.tscn" id="13_boss"]
+[ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="14_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="15_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="16_magnet"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_340_96"]
+size = Vector2(340, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_300_96"]
+size = Vector2(300, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_1000_96"]
+size = Vector2(1000, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boss_wall"]
+size = Vector2(40, 500)
+
+[node name="PlatformLevel5" type="Node2D"]
+script = ExtResource("1_ctrl")
+level_number = 5
+music_track = "suspense"
+
+[node name="CitadelBg" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ColorRect" type="ColorRect" parent="CitadelBg"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.12, 0.04, 0.16, 1)
+
+[node name="Platforms" type="Node2D" parent="."]
+
+[node name="Ground1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(170, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground1"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 340, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground1"]
+shape = SubResource("RectangleShape2D_p_340_96")
+
+[node name="BridgeIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(920, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/BridgeIsland"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 300, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BridgeIsland"]
+shape = SubResource("RectangleShape2D_p_300_96")
+
+[node name="BossArenaFloor" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1950, 480)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/BossArenaFloor"]
+texture_repeat = 2
+texture = ExtResource("2_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 1000, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossArenaFloor"]
+shape = SubResource("RectangleShape2D_p_1000_96")
+
+[node name="BossLeftWall" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1440, 240)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossLeftWall"]
+shape = SubResource("RectangleShape2D_boss_wall")
+
+[node name="BossRightWall" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2460, 240)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/BossRightWall"]
+shape = SubResource("RectangleShape2D_boss_wall")
+
+[node name="Crumble1" parent="." instance=ExtResource("11_falling")]
+position = Vector2(420, 430)
+
+[node name="Crumble2" parent="." instance=ExtResource("11_falling")]
+position = Vector2(560, 390)
+
+[node name="Crumble3" parent="." instance=ExtResource("11_falling")]
+position = Vector2(700, 430)
+
+[node name="ThwompEntrance" parent="." instance=ExtResource("9_thwomp")]
+position = Vector2(920, 160)
+
+[node name="FireBarCitadel" parent="." instance=ExtResource("10_firebar")]
+position = Vector2(1200, 410)
+rotation_speed = 3.0
+
+[node name="CheckpointFlag" parent="." instance=ExtResource("15_checkpoint")]
+position = Vector2(1490, 400)
+
+[node name="PowerupStar" parent="." instance=ExtResource("12_star")]
+position = Vector2(1540, 370)
+
+[node name="PowerupMagnet" parent="." instance=ExtResource("16_magnet")]
+position = Vector2(920, 320)
+
+[node name="BossMonster" parent="." instance=ExtResource("13_boss")]
+position = Vector2(2100, 390)
+boss_max_hp = 5
+
+[node name="Coins" type="Node2D" parent="."]
+
+[node name="Coin1" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(220, 390)
+
+[node name="Coin2" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(420, 360)
+
+[node name="Coin3" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(560, 320)
+
+[node name="Coin4" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(700, 360)
+
+[node name="Coin5" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(920, 380)
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Flyer1" parent="Enemies" instance=ExtResource("8_flyer")]
+position = Vector2(560, 240)
+
+[node name="Goomba1" parent="Enemies" instance=ExtResource("7_goomba")]
+position = Vector2(920, 410)
+
+[node name="Player" parent="." instance=ExtResource("4_player")]
+position = Vector2(60, 400)
+
+[node name="PlatformHUD" parent="." instance=ExtResource("14_hud")]
+"""
+    with open("scenes/levels/platform_level_5.tscn", "w", encoding="utf-8") as f:
+        f.write(content.strip())
+    print("Level 5 generated!")
+
+if __name__ == "__main__":
+    build_bonus_room()
+    build_level_1()
+    build_level_2()
+    build_level_3()
+    build_level_4()
+    build_level_5()
+    print("All Platformer V2 levels built successfully!")
+

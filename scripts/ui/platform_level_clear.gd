@@ -10,7 +10,11 @@ extends Control
 func _ready() -> void:
 	GameState.play_sfx("clear", 3.0)
 	title_label.text = "WORLD 1-%d CLEARED!" % GameState.current_level
-	stats_label.text = "TOTAL SCORE: %06d   |   COINS: %02d" % [GameState.score, GameState.coins]
+	var total_sec: float = GameState.level_time
+	var mins: int = int(total_sec) / 60
+	var secs: float = fmod(total_sec, 60.0)
+	var time_str: String = "%02d:%04.1f" % [mins, secs]
+	stats_label.text = "CLEAR TIME: %s\nTOTAL SCORE: %06d   |   COINS: %02d" % [time_str, GameState.score, GameState.coins]
 	
 	next_btn.pressed.connect(_on_next_pressed)
 	menu_btn.pressed.connect(_on_menu_pressed)

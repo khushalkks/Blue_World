@@ -1,160 +1,177 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
 [ext_resource type="Texture2D" path="res://assets/platformer/tile_stone.png" id="2_stone"]
 [ext_resource type="Texture2D" path="res://assets/platformer/block_brick.png" id="3_brick"]
 [ext_resource type="PackedScene" path="res://scenes/player/platform_player.tscn" id="4_player"]
 [ext_resource type="PackedScene" path="res://scenes/objects/coin.tscn" id="5_coin"]
-[ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="6_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/question_block.tscn" id="6_qblock"]
 [ext_resource type="PackedScene" path="res://scenes/objects/enemy_goomba.tscn" id="7_goomba"]
-[ext_resource type="PackedScene" path="res://scenes/objects/falling_platform.tscn" id="8_fall"]
-[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="9_move"]
-[ext_resource type="PackedScene" path="res://scenes/objects/powerup_star.tscn" id="10_star"]
-[ext_resource type="PackedScene" path="res://scenes/objects/spring_pad.tscn" id="11_spring"]
+[ext_resource type="PackedScene" path="res://scenes/objects/enemy_flyer.tscn" id="8_flyer"]
+[ext_resource type="PackedScene" path="res://scenes/objects/falling_platform.tscn" id="9_falling"]
+[ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="10_move"]
+[ext_resource type="PackedScene" path="res://scenes/objects/spikes.tscn" id="11_spike"]
 [ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="12_flag"]
 [ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="13_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_star.tscn" id="14_star"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="15_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/warp_pipe.tscn" id="16_pipe"]
+[ext_resource type="PackedScene" path="res://scenes/objects/powerup_magnet.tscn" id="17_magnet"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_340_96"]
-size = Vector2(340, 96)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_360_96"]
+size = Vector2(360, 96)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_220_48"]
-size = Vector2(220, 48)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_200_48"]
+size = Vector2(200, 48)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_480_96"]
-size = Vector2(480, 96)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p_520_96"]
+size = Vector2(520, 96)
 
 [node name="PlatformLevel3" type="Node2D"]
 script = ExtResource("1_ctrl")
 level_number = 3
 music_track = "suspense"
 
-[node name="AbyssSky" type="CanvasLayer" parent="."]
+[node name="AbyssBg" type="CanvasLayer" parent="."]
 layer = -100
 
-[node name="ColorRect" type="ColorRect" parent="AbyssSky"]
+[node name="ColorRect" type="ColorRect" parent="AbyssBg"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.06, 0.04, 0.12, 1)
+color = Color(0.04, 0.05, 0.12, 1)
 
 [node name="Platforms" type="Node2D" parent="."]
 
-[node name="StartLedge" type="StaticBody2D" parent="Platforms"]
-position = Vector2(170, 480)
+[node name="StartIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(180, 480)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/StartLedge"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/StartIsland"]
 texture_repeat = 2
 texture = ExtResource("2_stone")
 region_enabled = true
-region_rect = Rect2(0, 0, 340, 96)
+region_rect = Rect2(0, 0, 360, 96)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StartLedge"]
-shape = SubResource("RectangleShape2D_p_340_96")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StartIsland"]
+shape = SubResource("RectangleShape2D_p_360_96")
 
-[node name="MidLedge" type="StaticBody2D" parent="Platforms"]
-position = Vector2(980, 380)
+[node name="MidRest" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1100, 440)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/MidLedge"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/MidRest"]
 texture_repeat = 2
 texture = ExtResource("3_brick")
 region_enabled = true
-region_rect = Rect2(0, 0, 220, 48)
+region_rect = Rect2(0, 0, 200, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/MidLedge"]
-shape = SubResource("RectangleShape2D_p_220_48")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/MidRest"]
+shape = SubResource("RectangleShape2D_p_200_48")
 
-[node name="HighAltar" type="StaticBody2D" parent="Platforms"]
-position = Vector2(1500, 260)
+[node name="EndIsland" type="StaticBody2D" parent="Platforms"]
+position = Vector2(2060, 480)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/HighAltar"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/EndIsland"]
 texture_repeat = 2
 texture = ExtResource("2_stone")
 region_enabled = true
-region_rect = Rect2(0, 0, 220, 48)
+region_rect = Rect2(0, 0, 520, 96)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/HighAltar"]
-shape = SubResource("RectangleShape2D_p_220_48")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/EndIsland"]
+shape = SubResource("RectangleShape2D_p_520_96")
 
-[node name="GoalLedge" type="StaticBody2D" parent="Platforms"]
-position = Vector2(2200, 480)
-collision_layer = 2
-collision_mask = 0
+[node name="Crumble1" parent="." instance=ExtResource("9_falling")]
+position = Vector2(430, 430)
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/GoalLedge"]
-texture_repeat = 2
-texture = ExtResource("2_stone")
-region_enabled = true
-region_rect = Rect2(0, 0, 480, 96)
+[node name="Crumble2" parent="." instance=ExtResource("9_falling")]
+position = Vector2(550, 390)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GoalLedge"]
-shape = SubResource("RectangleShape2D_p_480_96")
+[node name="Crumble3" parent="." instance=ExtResource("9_falling")]
+position = Vector2(670, 350)
 
-[node name="Crumble1" parent="." instance=ExtResource("8_fall")]
-position = Vector2(440, 460)
+[node name="MovingPlatformAbyss" parent="." instance=ExtResource("10_move")]
+position = Vector2(850, 380)
+move_distance = 140.0
+move_speed = 70.0
+horizontal = true
 
-[node name="Crumble2" parent="." instance=ExtResource("8_fall")]
-position = Vector2(560, 420)
+[node name="Crumble4" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1320, 420)
 
-[node name="Crumble3" parent="." instance=ExtResource("8_fall")]
-position = Vector2(680, 380)
+[node name="Crumble5" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1460, 380)
 
-[node name="Crumble4" parent="." instance=ExtResource("8_fall")]
-position = Vector2(800, 380)
+[node name="Crumble6" parent="." instance=ExtResource("9_falling")]
+position = Vector2(1600, 340)
 
-[node name="MovingPlatform1" parent="." instance=ExtResource("9_move")]
-position = Vector2(1180, 340)
-move_offset = Vector2(180, -60)
-speed = 75.0
+[node name="MovingVertical" parent="." instance=ExtResource("10_move")]
+position = Vector2(1740, 400)
+move_distance = 110.0
+move_speed = 60.0
+horizontal = false
 
-[node name="SpringPad1" parent="." instance=ExtResource("11_spring")]
-position = Vector2(980, 344)
+[node name="WarpPipe" parent="." instance=ExtResource("16_pipe")]
+position = Vector2(300, 400)
+target_scene = "res://scenes/levels/bonus_coin_room.tscn"
 
-[node name="PowerupStar" parent="." instance=ExtResource("10_star")]
-position = Vector2(1500, 200)
+[node name="CheckpointFlag" parent="." instance=ExtResource("15_checkpoint")]
+position = Vector2(1100, 384)
 
-[node name="MovingPlatform2" parent="." instance=ExtResource("9_move")]
-position = Vector2(1720, 380)
-move_offset = Vector2(220, 40)
-speed = 80.0
+[node name="PowerupMagnet" parent="." instance=ExtResource("17_magnet")]
+position = Vector2(670, 270)
+
+[node name="PowerupStar" parent="." instance=ExtResource("14_star")]
+position = Vector2(1100, 290)
+
+[node name="Spikes1" parent="." instance=ExtResource("11_spike")]
+position = Vector2(1920, 420)
+
+[node name="Spikes2" parent="." instance=ExtResource("11_spike")]
+position = Vector2(1952, 420)
 
 [node name="Coins" type="Node2D" parent="."]
 
 [node name="Coin1" parent="Coins" instance=ExtResource("5_coin")]
-position = Vector2(440, 400)
+position = Vector2(430, 370)
 
 [node name="Coin2" parent="Coins" instance=ExtResource("5_coin")]
-position = Vector2(560, 360)
+position = Vector2(550, 330)
 
 [node name="Coin3" parent="Coins" instance=ExtResource("5_coin")]
-position = Vector2(680, 320)
+position = Vector2(670, 290)
 
 [node name="Coin4" parent="Coins" instance=ExtResource("5_coin")]
-position = Vector2(1270, 260)
+position = Vector2(850, 310)
 
 [node name="Coin5" parent="Coins" instance=ExtResource("5_coin")]
-position = Vector2(1830, 340)
+position = Vector2(1320, 360)
+
+[node name="Coin6" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1460, 320)
+
+[node name="Coin7" parent="Coins" instance=ExtResource("5_coin")]
+position = Vector2(1600, 280)
 
 [node name="Enemies" type="Node2D" parent="."]
 
-[node name="Flyer1" parent="Enemies" instance=ExtResource("6_flyer")]
-position = Vector2(560, 240)
+[node name="Flyer1" parent="Enemies" instance=ExtResource("8_flyer")]
+position = Vector2(550, 240)
 
-[node name="Flyer2" parent="Enemies" instance=ExtResource("6_flyer")]
-position = Vector2(1360, 200)
+[node name="Flyer2" parent="Enemies" instance=ExtResource("8_flyer")]
+position = Vector2(1460, 220)
 
 [node name="Goomba1" parent="Enemies" instance=ExtResource("7_goomba")]
-position = Vector2(2100, 410)
+position = Vector2(2040, 410)
 
 [node name="GoalFlag" parent="." instance=ExtResource("12_flag")]
-position = Vector2(2360, 388)
+position = Vector2(2240, 388)
 
 [node name="Player" parent="." instance=ExtResource("4_player")]
-position = Vector2(80, 400)
+position = Vector2(60, 400)
 
 [node name="PlatformHUD" parent="." instance=ExtResource("13_hud")]

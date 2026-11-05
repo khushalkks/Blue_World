@@ -246,14 +246,18 @@ bbcode_enabled = true
 text = "[b][color=#00e5ff]BASIC CONTROLS:[/color][/b]
 • [b]Move Left / Right:[/b] [b]A / D[/b] or [b]Arrow Keys[/b]
 • [b]Jump:[/b] [b]SPACEBAR[/b], [b]W[/b], or [b]Up Arrow[/b] (hold longer for maximum height!)
+• [b]Enter Warp Pipe:[/b] Press [b]S[/b] or [b]Down Arrow[/b] while standing on green pipes!
 • [b]Shoot Plasma Fireballs:[/b] Press [b]F[/b], [b]Shift[/b], or [b]J[/b] (after collecting Power Star!)
 • [b]Menu / Pause:[/b] [b]ESC[/b]
 
-[b][color=#ffdd44]SUSPENSE & HAZARDS:[/color][/b]
-• [b]Crumbling Platforms (World 3 & 4):[/b] Platforms start shaking when you land and drop within 0.75s! Keep moving!
-• [b]Crushing Thwomps (World 4 & 5):[/b] Giant stone crushers that SLAM down when you walk beneath them!
-• [b]Rotating Fire Bars (World 4 & 5):[/b] Time your jumps past rotating fireballs!
-• [b]2-Phase King Boss (World 5):[/b] Stomp him 3 times! In Phase 2 he shoots fireballs and summons minions!"
+[b][color=#55ff88]NEW EXCITING FEATURES & POWER-UPS:[/color][/b]
+• [b]Secret Warp Pipes & Bonus Vault:[/b] Crouch on green pipes to visit secret underground coin vaults!
+• [b]Checkpoint Flags:[/b] Touch mid-level checkpoints to save respawn points!
+• [b]🧲 Coin Magnet:[/b] Attracts all nearby coins right to you!
+• [b]🌈 Rainbow Star:[/b] Invincibility + high speed + crush any enemy!
+• [b]⚡ Air Stomp Combos:[/b] Stomp multiple enemies in air for x2, x4, x8 and 1-UP!
+• [b]💣 Bullet Blaster Cannons:[/b] Beware of incoming missiles; stomp them for huge bounces!
+• [b]2-Phase King Boss (World 5):[/b] In Phase 2 he becomes enraged and launches fireballs!"
 
 [node name="CloseHelpBtn" type="Button" parent="HelpDialog/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(140, 40)

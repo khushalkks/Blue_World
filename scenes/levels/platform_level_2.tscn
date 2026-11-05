@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3]
+[gd_scene load_steps=20 format=3]
 
 [ext_resource type="Script" path="res://scripts/levels/platform_level_controller.gd" id="1_ctrl"]
 [ext_resource type="Texture2D" path="res://assets/platformer/tile_dirt.png" id="2_dirt"]
@@ -14,6 +14,9 @@
 [ext_resource type="PackedScene" path="res://scenes/objects/moving_platform.tscn" id="12_move"]
 [ext_resource type="PackedScene" path="res://scenes/objects/goal_flag.tscn" id="13_flag"]
 [ext_resource type="PackedScene" path="res://scenes/ui/platform_hud.tscn" id="14_hud"]
+[ext_resource type="PackedScene" path="res://scenes/objects/checkpoint_flag.tscn" id="15_checkpoint"]
+[ext_resource type="PackedScene" path="res://scenes/objects/rainbow_star.tscn" id="16_rstar"]
+[ext_resource type="PackedScene" path="res://scenes/objects/cannon_blaster.tscn" id="17_cannon"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p_400_96"]
 size = Vector2(400, 96)
@@ -35,162 +38,162 @@ script = ExtResource("1_ctrl")
 level_number = 2
 music_track = "bgm"
 
-[node name="CaveBackground" type="CanvasLayer" parent="."]
+[node name="CavernBg" type="CanvasLayer" parent="."]
 layer = -100
 
-[node name="ColorRect" type="ColorRect" parent="CaveBackground"]
+[node name="ColorRect" type="ColorRect" parent="CavernBg"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.08, 0.11, 0.2, 1)
+color = Color(0.1, 0.12, 0.22, 1)
 
 [node name="Platforms" type="Node2D" parent="."]
 
-[node name="StartLedge" type="StaticBody2D" parent="Platforms"]
+[node name="Ground1" type="StaticBody2D" parent="Platforms"]
 position = Vector2(200, 480)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/StartLedge"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground1"]
 texture_repeat = 2
 texture = ExtResource("3_stone")
 region_enabled = true
 region_rect = Rect2(0, 0, 400, 96)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/StartLedge"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground1"]
 shape = SubResource("RectangleShape2D_p_400_96")
 
-[node name="Floating1" type="StaticBody2D" parent="Platforms"]
-position = Vector2(560, 380)
+[node name="Ledge1" type="StaticBody2D" parent="Platforms"]
+position = Vector2(540, 360)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/Floating1"]
-texture_repeat = 2
-texture = ExtResource("2_dirt")
-region_enabled = true
-region_rect = Rect2(0, 0, 220, 48)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Floating1"]
-shape = SubResource("RectangleShape2D_p_220_48")
-
-[node name="SpikePitFloor" type="StaticBody2D" parent="Platforms"]
-position = Vector2(980, 500)
-collision_layer = 2
-collision_mask = 0
-
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/SpikePitFloor"]
-texture_repeat = 2
-texture = ExtResource("3_stone")
-region_enabled = true
-region_rect = Rect2(0, 0, 320, 96)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/SpikePitFloor"]
-shape = SubResource("RectangleShape2D_p_320_96")
-
-[node name="HighPlatform1" type="StaticBody2D" parent="Platforms"]
-position = Vector2(980, 280)
-collision_layer = 2
-collision_mask = 0
-
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/HighPlatform1"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ledge1"]
 texture_repeat = 2
 texture = ExtResource("4_brick")
 region_enabled = true
 region_rect = Rect2(0, 0, 220, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/HighPlatform1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ledge1"]
 shape = SubResource("RectangleShape2D_p_220_48")
 
-[node name="PillarJump" type="StaticBody2D" parent="Platforms"]
-position = Vector2(1360, 380)
+[node name="MovingPlatform" parent="Platforms" instance=ExtResource("12_move")]
+position = Vector2(850, 380)
+move_distance = 180.0
+move_speed = 65.0
+horizontal = true
+
+[node name="Ground2" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1200, 480)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/PillarJump"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/Ground2"]
 texture_repeat = 2
-texture = ExtResource("2_dirt")
+texture = ExtResource("3_stone")
+region_enabled = true
+region_rect = Rect2(0, 0, 320, 96)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/Ground2"]
+shape = SubResource("RectangleShape2D_p_320_96")
+
+[node name="LedgeHigh" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1520, 320)
+collision_layer = 2
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/LedgeHigh"]
+texture_repeat = 2
+texture = ExtResource("4_brick")
 region_enabled = true
 region_rect = Rect2(0, 0, 140, 48)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/PillarJump"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/LedgeHigh"]
 shape = SubResource("RectangleShape2D_p_140_48")
 
-[node name="ExitPlatform" type="StaticBody2D" parent="Platforms"]
-position = Vector2(2150, 480)
+[node name="GroundEnd" type="StaticBody2D" parent="Platforms"]
+position = Vector2(1950, 480)
 collision_layer = 2
 collision_mask = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="Platforms/ExitPlatform"]
+[node name="Sprite2D" type="Sprite2D" parent="Platforms/GroundEnd"]
 texture_repeat = 2
 texture = ExtResource("3_stone")
 region_enabled = true
 region_rect = Rect2(0, 0, 500, 96)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/ExitPlatform"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/GroundEnd"]
 shape = SubResource("RectangleShape2D_p_500_96")
 
-[node name="MovingHoverLedge" parent="." instance=ExtResource("12_move")]
-position = Vector2(1580, 420)
-move_offset = Vector2(200, 0)
-speed = 70.0
-
 [node name="Spikes1" parent="." instance=ExtResource("11_spike")]
-position = Vector2(920, 440)
+position = Vector2(400, 420)
 
 [node name="Spikes2" parent="." instance=ExtResource("11_spike")]
-position = Vector2(980, 440)
+position = Vector2(432, 420)
 
 [node name="Spikes3" parent="." instance=ExtResource("11_spike")]
-position = Vector2(1040, 440)
+position = Vector2(1360, 420)
 
-[node name="SpringPad1" parent="." instance=ExtResource("10_spring")]
-position = Vector2(340, 420)
+[node name="CheckpointFlag" parent="." instance=ExtResource("15_checkpoint")]
+position = Vector2(1150, 400)
+
+[node name="RainbowStar" parent="." instance=ExtResource("16_rstar")]
+position = Vector2(850, 260)
+
+[node name="CannonBlaster" parent="." instance=ExtResource("17_cannon")]
+position = Vector2(1520, 272)
+fire_dir = -1.0
 
 [node name="QBlock1" parent="." instance=ExtResource("7_qblock")]
-position = Vector2(560, 240)
+position = Vector2(480, 260)
+
+[node name="QBlock2" parent="." instance=ExtResource("7_qblock")]
+position = Vector2(1200, 360)
+
+[node name="SpringPad" parent="." instance=ExtResource("10_spring")]
+position = Vector2(1280, 420)
 
 [node name="Coins" type="Node2D" parent="."]
 
 [node name="Coin1" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(500, 320)
+position = Vector2(280, 390)
 
 [node name="Coin2" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(620, 320)
+position = Vector2(540, 300)
 
 [node name="Coin3" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(920, 220)
+position = Vector2(850, 200)
 
 [node name="Coin4" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(980, 220)
+position = Vector2(1150, 320)
 
 [node name="Coin5" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1040, 220)
+position = Vector2(1520, 220)
 
 [node name="Coin6" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1650, 360)
-
-[node name="Coin7" parent="Coins" instance=ExtResource("6_coin")]
-position = Vector2(1740, 360)
+position = Vector2(1820, 390)
 
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Goomba1" parent="Enemies" instance=ExtResource("8_goomba")]
-position = Vector2(240, 410)
-
-[node name="Flyer1" parent="Enemies" instance=ExtResource("9_flyer")]
-position = Vector2(760, 280)
-
-[node name="Flyer2" parent="Enemies" instance=ExtResource("9_flyer")]
-position = Vector2(1200, 260)
+position = Vector2(300, 410)
 
 [node name="Goomba2" parent="Enemies" instance=ExtResource("8_goomba")]
-position = Vector2(2050, 410)
+position = Vector2(1120, 410)
+
+[node name="Goomba3" parent="Enemies" instance=ExtResource("8_goomba")]
+position = Vector2(1850, 410)
+
+[node name="Flyer1" parent="Enemies" instance=ExtResource("9_flyer")]
+position = Vector2(660, 280)
+
+[node name="Flyer2" parent="Enemies" instance=ExtResource("9_flyer")]
+position = Vector2(1380, 260)
 
 [node name="GoalFlag" parent="." instance=ExtResource("13_flag")]
-position = Vector2(2320, 388)
+position = Vector2(2120, 388)
 
 [node name="Player" parent="." instance=ExtResource("5_player")]
-position = Vector2(80, 400)
+position = Vector2(60, 400)
 
 [node name="PlatformHUD" parent="." instance=ExtResource("14_hud")]
