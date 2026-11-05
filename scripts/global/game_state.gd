@@ -7,6 +7,8 @@ signal stats_changed
 signal level_completed(level_num: int)
 signal game_over
 signal game_won
+signal checkpoint_reached(pos: Vector2)
+signal combo_triggered(combo_count: int, points: int, world_pos: Vector2)
 
 var score: int = 0
 var coins: int = 0
@@ -15,6 +17,19 @@ var max_lives: int = 3
 var current_level: int = 1
 var total_levels: int = 5
 var unlocked_level: int = 1
+
+# Checkpoint state
+var checkpoint_position: Vector2 = Vector2.ZERO
+var checkpoint_level: int = 0
+
+# Speedrun Level Timer & High Scores
+var level_time: float = 0.0
+var timer_active: bool = false
+var best_times: Dictionary = {}
+var high_score: int = 0
+
+# Air Stomp Combo Streak
+var stomp_streak: int = 0
 
 # Audio
 var sfx_player: AudioStreamPlayer = null
@@ -25,6 +40,10 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_setup_inputs()
 	_setup_audio()
+
+func _process(delta: float) -> void:
+	if timer_active:
+		level_time += delta
 
 func _setup_inputs() -> void:
 	var mapping := {
@@ -74,7 +93,13 @@ func _setup_audio() -> void:
 		"thwomp": "res://assets/audio/mario_thwomp.wav",
 		"crumble": "res://assets/audio/mario_crumble.wav",
 		"powerup": "res://assets/audio/mario_powerup.wav",
-		"suspense": "res://assets/audio/mario_suspense.wav"
+		"suspense": "res://assets/audio/mario_suspense.wav",
+		"pipe": "res://assets/audio/mario_pipe.wav",
+		"checkpoint": "res://assets/audio/mario_checkpoint.wav",
+		"cannon": "res://assets/audio/mario_cannon.wav",
+		"combo": "res://assets/audio/mario_combo.wav",
+		"magnet": "res://assets/audio/mario_magnet.wav",
+		"invincible": "res://assets/audio/mario_invincible.wav"
 	}
 	
 	for k in files:
@@ -112,24 +137,72 @@ func add_coin(amount: int = 1) -> void:
 
 func add_score(amount: int) -> void:
 	score += amount
+	if score > high_score:
+		high_score = score
 	stats_changed.emit()
+
+func set_checkpoint(pos: Vector2, lvl: int) -> void:
+	checkpoint_position = pos
+	checkpoint_level = lvl
+	play_sfx("checkpoint", 2.0)
+	checkpoint_reached.emit(pos)
+
+func clear_checkpoint() -> void:
+	checkpoint_position = Vector2.ZERO
+	checkpoint_level = 0
+
+func add_stomp_combo(world_pos: Vector2) -> int:
+	stomp_streak += 1
+	var pts := 100
+	if stomp_streak == 2:
+		pts = 200
+	elif stomp_streak == 3:
+		pts = 400
+	elif stomp_streak == 4:
+		pts = 800
+	elif stomp_streak >= 5:
+		pts = 1000
+		# 1-UP Bonus!
+		lives = mini(lives + 1, max_lives)
+		play_sfx("clear", 1.0)
+	
+	add_score(pts)
+	var pitch := 1.0 + (stomp_streak - 1) * 0.15
+	play_sfx("combo", 1.0, minf(pitch, 2.0))
+	combo_triggered.emit(stomp_streak, pts, world_pos)
+	return pts
+
+func reset_stomp_combo() -> void:
+	stomp_streak = 0
+
+func start_level_timer() -> void:
+	level_time = 0.0
+	timer_active = true
+
+func stop_level_timer() -> float:
+	timer_active = false
+	var key := "world_1_%d" % current_level
+	if not best_times.has(key) or level_time < best_times[key]:
+		best_times[key] = level_time
+	return level_time
 
 func take_damage() -> bool:
 	lives -= 1
 	play_sfx("hurt", 2.0)
 	stats_changed.emit()
-	if lives <= 0:
-		handle_game_over()
-		return true
-	return false
+	return lives <= 0
 
 func handle_game_over() -> void:
 	stop_bgm()
+	clear_checkpoint()
+	timer_active = false
 	game_over.emit()
 	get_tree().change_scene_to_file("res://scenes/ui/platform_game_over.tscn")
 
 func win_level() -> void:
 	stop_bgm()
+	stop_level_timer()
+	clear_checkpoint()
 	play_sfx("clear", 3.0)
 	add_score(1000 * current_level)
 	level_completed.emit(current_level)
@@ -143,6 +216,7 @@ func win_level() -> void:
 
 func next_level() -> void:
 	current_level += 1
+	clear_checkpoint()
 	load_level(current_level)
 
 func restart_current_level() -> void:
@@ -153,11 +227,15 @@ func start_new_game() -> void:
 	coins = 0
 	lives = 3
 	current_level = 1
+	clear_checkpoint()
+	reset_stomp_combo()
 	stats_changed.emit()
 	load_level(1)
 
 func load_level(lvl: int) -> void:
 	current_level = lvl
+	reset_stomp_combo()
+	start_level_timer()
 	var path := "res://scenes/levels/platform_level_%d.tscn" % lvl
 	if ResourceLoader.exists(path):
 		get_tree().change_scene_to_file(path)
@@ -166,4 +244,6 @@ func load_level(lvl: int) -> void:
 
 func return_to_menu() -> void:
 	stop_bgm()
+	timer_active = false
+	clear_checkpoint()
 	get_tree().change_scene_to_file("res://scenes/ui/platform_main_menu.tscn")

@@ -28,10 +28,27 @@ var is_dead: bool = false
 var has_plasma_power: bool = false
 var shoot_cooldown: float = 0.0
 
+# Power-ups
+var has_magnet_power: bool = false
+var magnet_timer: float = 0.0
+var magnet_radius: float = 260.0
+
+var is_rainbow_invincible: bool = false
+var rainbow_timer: float = 0.0
+var base_move_speed: float = 260.0
+
 @onready var camera: Camera2D = get_node_or_null("Camera2D")
 
 func _ready() -> void:
 	add_to_group("player")
+	base_move_speed = move_speed
+	
+	# Checkpoint respawn positioning
+	if GameState.checkpoint_position != Vector2.ZERO and GameState.checkpoint_level == GameState.current_level:
+		global_position = GameState.checkpoint_position
+		is_invulnerable = true
+		invuln_timer = 1.4
+	
 	if stomp_area:
 		stomp_area.area_entered.connect(_on_stomp_area_entered)
 		stomp_area.body_entered.connect(_on_stomp_body_entered)
@@ -45,8 +62,28 @@ func _physics_process(delta: float) -> void:
 		
 	# Fall into bottomless pit
 	if position.y > 600.0:
-		_die()
+		_die(true)
 		return
+	
+	# Magnet Power-up timer
+	if has_magnet_power:
+		magnet_timer -= delta
+		if magnet_timer <= 0.0:
+			has_magnet_power = false
+			
+	# Rainbow Invincibility timer & effects
+	if is_rainbow_invincible:
+		rainbow_timer -= delta
+		move_speed = 345.0
+		var hue = fmod(rainbow_timer * 6.0, 1.0)
+		sprite.modulate = Color.from_hsv(hue, 0.9, 1.4)
+		if rainbow_timer <= 0.0:
+			is_rainbow_invincible = false
+			move_speed = base_move_speed
+			if has_plasma_power:
+				sprite.modulate = Color(1.3, 1.2, 0.4, 1.0)
+			else:
+				sprite.modulate = Color(1.0, 1.0, 1.0, 1.0)
 	
 	# Plasma power cooldown & shooting
 	if has_plasma_power:
@@ -55,8 +92,8 @@ func _physics_process(delta: float) -> void:
 			shoot_plasma()
 			shoot_cooldown = 0.28
 	
-	# Invulnerability timer & blinking
-	if is_invulnerable:
+	# Invulnerability timer & blinking (when not in rainbow star mode)
+	if is_invulnerable and not is_rainbow_invincible:
 		invuln_timer -= delta
 		sprite.visible = int(invuln_timer * 14.0) % 2 == 0
 		if invuln_timer <= 0.0:
@@ -66,6 +103,7 @@ func _physics_process(delta: float) -> void:
 	# Coyote time & Jump buffer timers
 	if is_on_floor():
 		coyote_timer = 0.12
+		GameState.reset_stomp_combo()
 	else:
 		coyote_timer -= delta
 		
@@ -125,6 +163,14 @@ func grant_plasma_power() -> void:
 	sprite.modulate = Color(1.3, 1.2, 0.4, 1.0)
 	target_scale = Vector2(1.3, 1.3)
 
+func grant_magnet_power(duration: float = 12.0) -> void:
+	has_magnet_power = true
+	magnet_timer = duration
+
+func grant_invincible_power(duration: float = 10.0) -> void:
+	is_rainbow_invincible = true
+	rainbow_timer = duration
+
 func shoot_plasma() -> void:
 	GameState.play_sfx("fireball", 1.0)
 	var proj_scene = load("res://scenes/objects/plasma_projectile.tscn")
@@ -135,12 +181,12 @@ func shoot_plasma() -> void:
 		get_parent().add_child(p)
 
 func take_damage(knockback_dir: float = 0.0) -> void:
-	if is_invulnerable or is_dead:
+	if is_invulnerable or is_dead or is_rainbow_invincible:
 		return
 		
 	var fatal := GameState.take_damage()
 	if fatal:
-		_die()
+		_die(false)
 		return
 		
 	is_invulnerable = true
@@ -149,16 +195,16 @@ func take_damage(knockback_dir: float = 0.0) -> void:
 	velocity.x = knockback_dir * 220.0
 	target_scale = Vector2(1.2, 0.8)
 
-func _die() -> void:
+func _die(from_pit: bool = false) -> void:
 	if is_dead:
 		return
 	is_dead = true
 	GameState.play_sfx("hurt", 3.0)
 	player_died.emit()
 	
-	# Check lives
-	GameState.lives -= 1
-	GameState.stats_changed.emit()
+	if from_pit:
+		GameState.lives -= 1
+		GameState.stats_changed.emit()
 	
 	await get_tree().create_timer(0.8).timeout
 	if GameState.lives <= 0:
@@ -180,6 +226,14 @@ func _on_stomp_body_entered(body: Node2D) -> void:
 			bounce()
 
 func _on_hurtbox_body_entered(body: Node2D) -> void:
+	if is_dead:
+		return
+	if is_rainbow_invincible and body.is_in_group("enemy"):
+		if body.has_method("die_from_stomp"):
+			body.die_from_stomp()
+			bounce(-380.0)
+			return
+			
 	if body.is_in_group("enemy") and not is_invulnerable:
 		var dir: float = -1.0 if body.global_position.x > global_position.x else 1.0
 		take_damage(dir)
@@ -187,6 +241,15 @@ func _on_hurtbox_body_entered(body: Node2D) -> void:
 		take_damage(0.0)
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if is_dead:
+		return
+	if is_rainbow_invincible and area.is_in_group("enemy"):
+		var enemy = area.get_parent()
+		if enemy and enemy.has_method("die_from_stomp"):
+			enemy.die_from_stomp()
+			bounce(-380.0)
+			return
+			
 	if area.is_in_group("hazard"):
 		take_damage(0.0)
 

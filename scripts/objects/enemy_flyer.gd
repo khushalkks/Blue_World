@@ -40,7 +40,7 @@ func die_from_stomp() -> void:
 		return
 	is_dead = true
 	GameState.play_sfx("stomp", 2.0)
-	GameState.add_score(300)
+	GameState.add_stomp_combo(global_position)
 	
 	# Falling defeat animation
 	var tw = create_tween().set_parallel(true)

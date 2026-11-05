@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/objects/warp_pipe.gd" id="1_pipe"]
+[ext_resource type="Texture2D" path="res://assets/platformer/warp_pipe.png" id="2_pipe_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pipe_body"]
+size = Vector2(44, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pipe_enter"]
+size = Vector2(28, 14)
+
+[node name="WarpPipe" type="StaticBody2D"]
+collision_layer = 3
+collision_mask = 0
+script = ExtResource("1_pipe")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pipe_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_pipe_body")
+
+[node name="EnterArea" type="Area2D" parent="."]
+position = Vector2(0, -32)
+collision_layer = 0
+collision_mask = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnterArea"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_pipe_enter")
+

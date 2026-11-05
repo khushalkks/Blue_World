@@ -54,7 +54,7 @@ func die_from_stomp() -> void:
 		return
 	is_dead = true
 	GameState.play_sfx("stomp", 2.0)
-	GameState.add_score(200)
+	GameState.add_stomp_combo(global_position)
 	
 	# Disable collisions
 	$CollisionShape2D.set_deferred("disabled", true)

@@ -11,6 +11,7 @@ var is_collected: bool = false
 @onready var sprite: Sprite2D = $Sprite2D
 
 func _ready() -> void:
+	add_to_group("coin")
 	base_y = position.y
 	time_offset = randf() * 10.0
 	body_entered.connect(_on_body_entered)
@@ -18,6 +19,16 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not is_collected:
 		var t = Time.get_ticks_msec() / 1000.0 + time_offset
+		# Magnetic attraction to player
+		var player = get_tree().get_first_node_in_group("player")
+		if player and "has_magnet_power" in player and player.has_magnet_power:
+			var dist: float = global_position.distance_to(player.global_position)
+			if dist < player.magnet_radius:
+				var pull_dir = (player.global_position - global_position).normalized()
+				var speed = lerpf(680.0, 300.0, dist / player.magnet_radius)
+				global_position += pull_dir * speed * delta
+				base_y = position.y
+		
 		position.y = base_y + sin(t * 5.0) * 4.0
 		# Coin 3D spin effect by scaling X
 		sprite.scale.x = sin(t * 7.0)
